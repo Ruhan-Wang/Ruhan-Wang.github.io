@@ -59,7 +59,10 @@ export default function HomePageClient({ dataByLocale, defaultLocale }: HomePage
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-background min-h-screen">
       {data.announcement?.enabled && data.announcement.text && (
         <div className="mb-8 border-l-4 border-amber-600 bg-amber-50 px-5 py-3 rounded-r-md">
-          <div className="text-amber-800 font-bold italic text-sm sm:text-base leading-snug">
+          <div
+            className="text-amber-800 font-bold italic text-sm sm:text-base leading-snug"
+            style={{ fontFamily: '"Times New Roman", Times, serif' }}
+          >
             <ReactMarkdown
               components={{
                 p: ({ children }) => <p className="m-0">{children}</p>,

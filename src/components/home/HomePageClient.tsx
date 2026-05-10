@@ -58,8 +58,8 @@ export default function HomePageClient({ dataByLocale, defaultLocale }: HomePage
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-background min-h-screen">
       {data.announcement?.enabled && data.announcement.text && (
-        <div className="mb-8 border-l-4 border-red-600 bg-red-50 px-5 py-3 rounded-r-md">
-          <div className="text-red-700 font-bold italic text-sm sm:text-base leading-snug">
+        <div className="mb-8 border-l-4 border-amber-600 bg-amber-50 px-5 py-3 rounded-r-md">
+          <div className="text-amber-800 font-bold italic text-sm sm:text-base leading-snug">
             <ReactMarkdown
               components={{
                 p: ({ children }) => <p className="m-0">{children}</p>,
@@ -68,7 +68,7 @@ export default function HomePageClient({ dataByLocale, defaultLocale }: HomePage
                     {...props}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="underline underline-offset-2 hover:text-red-900 transition-colors"
+                    className="underline underline-offset-2 hover:text-amber-900 transition-colors"
                   />
                 ),
               }}

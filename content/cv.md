@@ -28,7 +28,7 @@
 - Worked on quantum machine learning and generative models
 
 ![IU](https://www.google.com/s2/favicons?domain=iu.edu&sz=64) **Graduate Student Researcher**, Machine Learning Lab, Indiana University, *Aug. 2023 - Present*
-- Advisor: [Dr. Dongruo Zhou](https://sites.google.com/view/drzhou)
+- Advisor: [Dongruo Zhou](https://sites.google.com/view/drzhou)
 
 ![IU](https://www.google.com/s2/favicons?domain=iu.edu&sz=64) **Graduate Student Researcher**, Quantum Computing Lab, Indiana University, *Aug. 2022 - Aug. 2023*
 - Advisor: Dr. Fan Chen

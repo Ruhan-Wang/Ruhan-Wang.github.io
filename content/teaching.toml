@@ -1,10 +1,38 @@
 type = "card"
 title = "Teaching"
-description = "Courses I have taught or assisted with."
+description = "Courses I have taught as Associate Instructor at Indiana University Bloomington."
 
 [[items]]
-title = "Example Course"
-subtitle = "Teaching Assistant"
-date = "2024"
-content = "Description of the course and responsibilities. Content of this course can be found [here](https://example.com)."
-tags = ["Undergraduate", "CS"]
+title = "CSCI-B659: Reinforcement Learning for LLM"
+subtitle = "Associate Instructor — Indiana University"
+date = "Spring 2026"
+content = "Graduate seminar covering RLHF, agentic reinforcement learning, and post-training methods for large language models."
+tags = ["Graduate", "RL", "LLM"]
+
+[[items]]
+title = "CSCI-B565: Data Mining"
+subtitle = "Associate Instructor — Indiana University"
+date = "Fall 2024 & Fall 2025"
+content = "Graduate course on data mining fundamentals: pattern mining, classification, clustering, association rules, and large-scale data analysis."
+tags = ["Graduate", "Data Mining", "ML"]
+
+[[items]]
+title = "CSCI-B455: Principles of Machine Learning"
+subtitle = "Associate Instructor — Indiana University"
+date = "Spring 2025"
+content = "Undergraduate introduction to machine learning: supervised and unsupervised methods, model evaluation, and foundational theory."
+tags = ["Undergraduate", "ML"]
+
+[[items]]
+title = "ENGR-E516: Engineering Cloud Computing"
+subtitle = "Associate Instructor — Indiana University"
+date = "Spring 2024"
+content = "Graduate course on cloud computing: distributed systems, container orchestration, serverless platforms, and deployment on AWS / Azure / GCP."
+tags = ["Graduate", "Cloud Computing", "Systems"]
+
+[[items]]
+title = "ENGR-E599: Deep Learning Architecture and Hardware Acceleration"
+subtitle = "Associate Instructor — Indiana University"
+date = "Fall 2023"
+content = "Graduate course on deep learning systems: neural network accelerators, GPU/TPU hardware, model compression, and efficient deployment."
+tags = ["Graduate", "Deep Learning", "Hardware"]

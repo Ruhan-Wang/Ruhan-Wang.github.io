@@ -1,5 +1,5 @@
-I am a PhD student at the School of Science, University of Example, advised by [Prof. Advisor One](https://example.com) and [Dr. Advisor Two](https://example.com).
+I am a Ph.D. candidate in Intelligent Systems Engineering at Indiana University, advised by [Prof. Dongruo Zhou](http://sites.google.com/view/drzhou). My research focuses on building self-improving large language models and autonomous AI agents that can continuously learn from interaction, feedback, memory, and experience. To support this goal, I study reinforcement learning for post-training, reasoning, and agentic behaviors in large-scale language models, with recent interests in Agent Reinforcement Learning, federated reasoning, and memory mechanisms for iterative self-improvement.
 
-Prior to this, I obtained a BSc degree with First Class Honours in Natural Science from the University of Example.
+My recent work spans agentic LLM systems, uncertainty-aware reasoning, federated in-context learning, RL-enhanced retrieval-augmented generation, and offline reinforcement learning. I have also worked on multimodal agentic recommender systems and adaptive reasoning frameworks for large language models.
 
-My current research focuses on investigating the mathematical principles of natural philosophy.
+I am currently a Research Intern at Tencent AI Lab (Hunyuan Frontier Lab), where I work on Agentic Reinforcement Learning for large language model agents. Previously, I worked as a Ph.D. Research Intern at Mitsubishi Electric Research Laboratories, where I explored quantum machine learning and generative models.

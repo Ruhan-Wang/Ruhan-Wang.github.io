@@ -3,7 +3,43 @@ title = "Services"
 description = "Professional services and community involvement."
 
 [[items]]
-title = "Reviewer"
-subtitle = "Journal Name"
-date = "2024"
-content = "Reviewed papers for..."
+title = "Conference Reviewer — ICLR"
+subtitle = "International Conference on Learning Representations"
+date = "2024 – 2026"
+content = "Recognized as a **Top 25% Reviewer** for ICLR 2026."
+tags = ["Conference", "Reviewer"]
+
+[[items]]
+title = "Conference Reviewer — ICML"
+subtitle = "International Conference on Machine Learning"
+date = "2024 – 2026"
+content = "Reviewed submissions on reinforcement learning, large language models, and federated learning."
+tags = ["Conference", "Reviewer"]
+
+[[items]]
+title = "Conference Reviewer — NeurIPS"
+subtitle = "Annual Conference on Neural Information Processing Systems"
+date = "2024 – 2026"
+content = "Reviewed submissions on reinforcement learning, large language models, and federated learning."
+tags = ["Conference", "Reviewer"]
+
+[[items]]
+title = "Conference Reviewer — AAAI"
+subtitle = "Association for the Advancement of Artificial Intelligence"
+date = "2024 – 2026"
+content = "Reviewed submissions across machine learning and quantum machine learning tracks."
+tags = ["Conference", "Reviewer"]
+
+[[items]]
+title = "Journal Reviewer — Measurement Science and Technology"
+subtitle = "IOP Publishing"
+date = "2024 – 2026"
+content = "Reviewed manuscripts on measurement methodology and instrumentation."
+tags = ["Journal", "Reviewer"]
+
+[[items]]
+title = "Journal Reviewer — Physica Scripta"
+subtitle = "IOP Publishing"
+date = "2024 – 2026"
+content = "Reviewed manuscripts in applied physics and quantum systems."
+tags = ["Journal", "Reviewer"]

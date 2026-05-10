@@ -1,26 +1,45 @@
 ## Education
 
-**The University of Example**, PhD in Natural Science, *2025 - Present*
-- Research focus: Mathematical Principles of Natural Philosophy
-- Supervisor: Prof. Advisor One and Dr. Advisor Two
+**Indiana University**, Ph.D. in Computer Engineering, *Aug. 2022 - Present*
+- Bloomington, IN, USA
 
-**The University of Example**, BSc in Natural Science, *2021 - 2025*
-- Graduated with First Class Honours
+**Indiana University**, M.S. in Computer Engineering, *Aug. 2022 - Dec. 2024*
+- Bloomington, IN, USA
 
-## Experience
+## Research Interests
 
-**Example Role**
-Company/Institution
-*2023 - 2024*
-- Description of key responsibilities and achievements.
-- Utilized skills to solve problems.
+- Agent Reinforcement Learning
+- Reinforcement Learning for Post-training, Reasoning
+- Self-Improving LLMs
 
-## Skills
 
-- **Programming:** Python, C++, MATLAB, LaTeX
-- **Data Analysis:** Pandas, NumPy, SciPy
-- **Languages:** English (Native), French (Fluent)
+## Working Experience
 
-## Awards & Honors
+**Ph.D. Research Intern**, Tencent AI Lab (Hunyuan Frontier Lab), *May 2026 - Aug. 2026*
+- Working on Agentic Reinforcement Learning for large language model agents
 
-- **First Prize in Example Competition** - Committee of Example (*2024*)
+**Ph.D. Research Intern**, Mitsubishi Electric Research Laboratories, *May 2024 - Aug. 2024*
+- Host: Toshiaki Koike-Akino
+- Worked on quantum machine learning and generative models
+
+**Graduate Student Researcher**, Machine Learning Lab, Indiana University, *Aug. 2023 - Present*
+- Advisor: Dr. Dongruo Zhou
+
+**Graduate Student Researcher**, Quantum Computing Lab, Indiana University, *Aug. 2022 - Aug. 2023*
+- Advisor: Dr. Fan Chen
+
+## Teaching Experience
+
+- **Associate Instructor**, ENGR-E599: Deep Learning Architecture and Hardware Acceleration, *Fall 2023*
+- **Associate Instructor**, ENGR-E516: Engineering Cloud Computing, *Spring 2024*
+- **Associate Instructor**, CSCI-B565: Data Mining, *Fall 2024* *Fall 2025*
+- **Associate Instructor**, CSCI-B455: Principles of Machine Learning, *Spring 2025*
+- **Associate Instructor**, CSCI-B659: Reinforcement Learning for LLM, *Spring 2026*
+
+## Professional Services
+
+- **Conference Reviewer**: International Conference on Machine Learning (ICML)
+- **Conference Reviewer**: Annual Conference on Neural Information Processing Systems (NeurIPS)
+- **Conference Reviewer**: International Conference on Learning Representations(ICLR)(Top 25% Reviewer)
+- **Conference Reviewer**: Association for the Advancement of Artificial Intelligence (AAAI)
+

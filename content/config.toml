@@ -27,7 +27,7 @@ linkedin = "https://www.linkedin.com/in/ruhan-wang-075922255/"
 
 [announcement]
 enabled = true
-text = "🎯 I'm on the 2026 Job Market — actively seeking research positions in both industry and academia. 🤝 I'm also always excited to explore new research collaborations and exchange ideas with fellow researchers. 📩 Please feel free to reach out via email or LinkedIn — I'd love to chat!"
+text = "🎯 I'm on the 2026 Job Market — actively seeking research positions in both industry and academia. 🤝 I'm also always excited to explore new research collaborations and exchange ideas with fellow researchers. 📩 Please feel free to reach out via [email](mailto:ruhwang@iu.edu) or [LinkedIn](https://www.linkedin.com/in/ruhan-wang-075922255/?skipRedirect=true) — I'd love to chat!"
 
 [features]
 # Show a like button on the about page

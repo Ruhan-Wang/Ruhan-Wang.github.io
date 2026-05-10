@@ -1,3 +1,7 @@
+📄 **[Download Full CV (PDF)](/main_LLM.pdf)** — *Last updated: May 2026*
+
+---
+
 ## Education
 
 **Indiana University**, Ph.D. in Computer Engineering, *Aug. 2022 - Present*

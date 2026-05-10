@@ -1,0 +1,326 @@
+%-------------------------
+% Resume in Latex
+% Author : Shubhi Rani
+% License : MIT
+%------------------------
+
+\documentclass[letterpaper,10.8pt]{article}
+\usepackage{fontawesome5}
+\usepackage{latexsym}
+\usepackage{tabularx}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage[hidelinks]{hyperref}
+\usepackage{amsmath}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,     % color of internal links
+    citecolor=blue,     % color of links to bibliography
+    filecolor=magenta,  % color of file links
+    urlcolor=blue       % color of external links
+}
+\usepackage{fontawesome5} % or fontawesome for older versions
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.375in}
+\addtolength{\evensidemargin}{-0.375in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1in}
+
+\urlstyle{rm}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-3pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[2]{
+  \item\small{
+    \textbf{#1}{: #2 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeItemWithoutTitle}[1]{
+  \item\small{
+    {\vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-1pt}\item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \textit{\small#3} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-5pt}
+}
+
+
+\newcommand{\resumeSubItem}[2]{\resumeItem{#1}{#2}\vspace{-4pt}}
+
+\renewcommand{\labelitemii}{$\circ$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=*]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  CV STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+%----------HEADING-----------------
+% In your document:
+\begin{center}
+  {\LARGE \textbf{Ruhan Wang}}\\[0.5em]
+
+  \faMapMarker* \hspace{0.5em} Bloomington, IN, USA \quad
+  \faEnvelope \hspace{0.5em} \href{mailto:ruhwang@iu.edu}{ruhwang@iu.edu} \quad
+  \faPhone \hspace{0.5em} +1 (812) 327-8256 \quad
+  \faLinkedin \hspace{0.5em} \href{https://www.linkedin.com/in/ruhan-wang-075922255/}{LinkedIn} \quad
+  \faGraduationCap \hspace{0.5em} \href{https://scholar.google.com/citations?user=vHgJIPoAAAAJ&hl=en}{Google Scholar}
+
+  \vspace{0.5em}
+  \hrule
+\end{center}%-----------EDUCATION-----------------
+\resumeSubHeadingListStart
+
+    \resumeSubheading
+        {Indiana University}{Aug. 2022 -- Present}
+        {Ph.D. of Computer Engineering}{Bloomington, IN, US}
+    \resumeSubheading
+        {Indiana University}{Aug. 2022 -- Dec. 2024}
+        {Master of Computer Engineering}{Bloomington, IN, US}
+\resumeSubHeadingListEnd
+
+%-----------RESEARCH INTERESTS-----------------
+\section{Research Interests}
+\begin{itemize}[label=$\bullet$,leftmargin=*]
+\setlength\itemsep{-0.1em}
+\item Agent Reinforcement Learning
+\item Reinforcement Learning for Post-training, Reasoning
+\item Self-Improving Large Language Models
+\end{itemize}
+
+%-----------HONORS AND AWARDS-----------------
+\section{Honors and Awards}
+\begin{description}[font=$\bullet$,leftmargin=*]
+\setlength\itemsep{-0.1em}
+\item First Prize, Contemporary Undergraduate Mathematical Contest in Modeling, 2021 
+\item National Excellent Award, The Contest of Lan Qiao Cup, 11/2020
+\item First Prize \& Second Prize, Contemporary Undergraduate Mathematical Contest in Modeling, 11/2020
+\item Scholarship of Henan University, 2020 \& 2019
+\item First Prize, Chinese Mathematics Competition, 2019
+\item Outstanding Graduates of Henan University, 2022
+\item Excellent thesis in Henan Province, China, 2022
+\end{description}
+%-----------EXPERIENCE-----------------
+
+\section{Working Experience}
+\begin{description}[font=$\bullet$]
+\item Ph.D. Research Intern at Tencent AI Lab (Hunyuan Frontier Lab), Bellevue, WA, May 2026 - Aug. 2026 (Host: \href{https://sites.google.com/a/tamu.edu/kpb/home}{Kishan Panaganti}). Working on Agentic Reinforcement Learning for large language model agents.
+\item Ph.D. Research Intern at Mitsubishi Electric Research Laboratories, Cambridge, MA, May 2024 - Aug. 2024 (Host: \href{https://scholar.google.com/citations?user=ZMo2ZM0AAAAJ&hl=en}{Toshiaki Koike-Akino}). Worked on quantum machine learning and generative models.
+\item Graduate Student Researcher, Machine Learning Lab, Indiana University, Aug. 2023 - Present (Advisor: \href{https://sites.google.com/view/drzhou}{Dr. Dongruo Zhou}).
+\item Graduate Student Researcher, Quantum Computing Lab, Indiana University, Aug. 2022 - Aug. 2023 (Advisor: Dr. Fan Chen).
+\end{description}
+
+\section{Teaching Experience}
+\begin{description}[font=$\bullet$]
+\item Associate Instructor for CSCI-B659: Reinforcement Learning for LLM. (Spring 2026)
+\item Associate Instructor for CSCI-B565: Data Mining. (Fall 2024 \& Fall 2025)
+\item Associate Instructor for CSCI-B455: Principles of Machine Learning. (Spring 2025)
+\item Associate Instructor for ENGR-E516: Engineering Cloud Computing. (Spring 2024)
+\item Associate Instructor for ENGR-E599: Deep Learning Architecture and Hardware Acceleration. (Fall 2023)
+\end{description}
+
+\section{Professional Services}
+\begin{description}[font=$\bullet$]
+\item Conference Reviewer: International Conference on Learning Representations (ICLR) --- \textbf{Top 25\% Reviewer, 2026}
+\item Conference Reviewer: International Conference on Machine Learning (ICML)
+\item Conference Reviewer: Annual Conference on Neural Information Processing Systems (NeurIPS)
+\item Conference Reviewer: Association for the Advancement of Artificial Intelligence (AAAI)
+\item Journal Reviewer: Measurement Science and Technology
+\item Journal Reviewer: Physica Scripta
+\end{description}
+
+\section{Research Experience}
+\resumeSubHeadingListStart
+\small
+\resumeSubheading
+{More Memory, Worse Agents: Error Reproduction and Anti-Persistence in LLM Agents}{Bellevue, WA / Indiana, US}
+{Hosts: Kishan Panaganti (Tencent AI Lab), Assistant Prof. Dongruo Zhou (Indiana University)}{Feb. 2026 -- Present}
+\begin{itemize}[label=$\circ$, leftmargin=0.15in]
+\setlength\itemsep{-0.1em}
+\item Identified error reproduction as a structural failure mode in persistent abstraction-based memory for self-improving LLM agents, distinct from trajectory-level error propagation.
+\item Proposed ANTI-PERSISTENCE, a memory module that stores only factual interaction records (raw trajectories and outcomes) while constructing task-specific abstractions on demand at inference time, removing the cross-iteration feedback loop induced by persistent abstractions.
+\item Designed an adaptive mode-selection mechanism over four abstraction modes (none, imitation, strategic, corrective) via a recency-weighted contextual UCB bandit operating on a factual outcome log, enabling reusable abstraction procedures without persisting abstraction contents.
+\item Conducted comprehensive experiments across three benchmarks (ALFWorld, WebShop, ScienceWorld) and three backbones (Llama-4-Scout, Qwen3-Coder-Next, Gemma-4-31B-it), demonstrating consistent improvements in held-out task success rate, inference cost, and long-term iterative stability over persistent-memory baselines.
+\end{itemize}
+
+\resumeSubheading
+{Uncertainty-Aware Federated Reasoning with Large Language Models (FERA)}{Indiana, US}
+{Advisor: Assistant Prof. Dongruo Zhou}{Aug. 2025 -- Feb. 2026}
+\begin{itemize}[label=$\circ$, leftmargin=0.15in]
+\setlength\itemsep{-0.1em}
+\item Proposed FERA, a parameter-free federated reasoning framework that leverages uncertainty quantification to address the trade-off between computational efficiency and reasoning performance in federated rLLMs.
+\item Developed a dual-pipeline aggregation mechanism: uncertainty-weighted majority voting for simple QA tasks and uncertainty-aware self-critique for complex Chain-of-Thought reasoning.
+\item Designed iterative server–client collaboration protocols that progressively refine uncertainty estimates across communication rounds.
+\item Conducted comprehensive experiments on diverse benchmarks, demonstrating consistent improvements over training-based and parameter-free baselines.
+\end{itemize}
+
+
+
+\resumeSubheading
+{Agentic Recommender Systems with Multimodal LLMs}{Indiana, US}
+{Advisor: Assistant Prof. Dongruo Zhou}{Dec. 2024 -- Mar. 2025}
+\begin{itemize}[label=$\circ$, leftmargin=0.15in]
+\setlength\itemsep{-0.1em}
+\item Develop a formal framework for LLM-based Agentic Recommender Systems (LLM-ARS), incorporating core modules such as user profiling, memory, planning, and action selection to enable continuous learning and proactive recommendation generation.
+\item Explore agentic capabilities of Large Language Models through multi-agent collaboration and role-playing simulations; benchmark planning and reasoning abilities using chain-of-thought prompting, user feedback modeling, and surrogate user environments.
+\item Identify and analyze seven key research challenges in LLM-ARS, including multimodal fusion, interaction grounding, lifelong personalization, and safe autonomous behavior; propose future directions for scalable, interpretable, and ethically-aligned RS systems.
+\end{itemize}
+
+\resumeSubheading
+{Federated In-context Learning: Make Agent Powerful}{Indiana, US}
+{Advisor: Assistant Prof. Dongruo Zhou}{Oct. 2024 - Jan. 2025}
+\begin{itemize}[label=$\circ$,leftmargin=0.15in]
+\setlength\itemsep{-0.1em}
+\item Propose a novel privacy-preserving framework for Federated In-Context LLM Agents(Fed-ICL), leveraging the strengths of in-context learning to collaboratively train diverse LLM agents while ensuring data privacy through federated learning.
+\item Establish a theoretical foundation for Fed-ICL by proving its equivalence to established federated learning algorithms, highlighting the robustness and effectiveness of the proposed framework.
+\item Compare the proposed framework with other collaborative LLM agent baselines, such as Mixture-of-Agents and Multiagents Debate, across various tasks. Experimental results demonstrate the superior performance of our algorithm.
+\end{itemize}
+
+
+\resumeSubheading
+{Incorporating RL into Retrieval-Augmented Generation (RAG) for Personalizing LLM Agents}{Indiana, US}
+{Advisor: Assistant Prof. Dongruo Zhou}{May 2024 - Aug. 2024}
+\begin{itemize}[label=$\circ$,leftmargin=0.15in]
+\setlength\itemsep{-0.1em}
+\item Incorporate sequential decision-making into RAG overcomes its limitations, such as the inability to utilize user feedback and generate personalized retrievals, thereby enabling LLM agents to produce tailored content.
+\item Propose a contextual bandit-based retrieval framework to optimize retrieval models, enabling the delivery of a personalized selection of documents to LLM agents for enhanced, tailored content generation.
+\item Compare the performance of the contextual bandit-based retriever with traditional retrieval methods, such as BM25, highlighting the superior effectiveness of the contextual bandit-based approach in delivering personalized and relevant documents for large language models.
+\end{itemize}
+
+\resumeSubheading
+{Enhance Offline RL with Return Augmentation for Domain Adaptation Problems}{Indiana, US}
+{Advisor: Assistant Prof. Dongruo Zhou}{Feb. 2024 - May 2024}
+\begin{itemize}[label=$\circ$,leftmargin=0.15in]
+\setlength\itemsep{-0.1em}
+\item Study offline off-dynamics RL to leverage data from an easily accessible source domain, enhancing policy learning and enabling the trained agent to perform effectively in the target domain.
+\item Introduce the novel Return Augmented Decision Transformer (RADT) method to address the off-dynamics challenge by augmenting the returns of offline trajectories in the source domain. A rigorous analysis is provided to demonstrate that the return-conditioned policy learned via RADT achieves a comparable level of suboptimality to a policy trained directly in the target domain.
+\item Conduct comprehensive experiments on the D4RL benchmark under various off-dynamics shift settings to evaluate the performance of RADT, comparing it against other baseline methods and demonstrating its effectiveness.
+\end{itemize}
+
+
+\resumeSubheading
+{Enhance Safe Offline RL with Constrained Q-learning Decision Transformer}{Indiana, US}
+{Advisor: Assistant Prof. Dongruo Zhou}{May 2024 - Aug. 2024}
+\begin{itemize}[label=$\circ$,leftmargin=0.15in]
+\setlength\itemsep{-0.1em}
+\item Introduce the Constrained Q-learning Decision Transformer (CQDT) to address the stitching limitations of the Constrained Decision Transformer (CDT) in the safe reinforcement learning domain. CQDT enables agents to select the optimal policy that maximizes rewards while strictly adhering to safety constraints.
+\item Compare the performance of CQDT with other baselines across various safe reinforcement learning benchmarks. Experimental results demonstrate the superior effectiveness of CQDT in achieving high rewards while adhering to safety constraints.
+\end{itemize}
+
+
+\resumeSubheading
+{Model the Eed-to-end Carbon Footprint of Large Language Models}{Indiana, US}
+{Advisor: Assistant Prof. Fan Chen}{Jul. 2023 - Sep. 2023}
+\begin{itemize}[label=$\circ$,leftmargin=0.15in]
+\setlength\itemsep{-0.1em}
+\item Propose an end-to-end carbon footprint projection model, LLMCarbon, designed to accurately predict the carbon footprint of various LLM agents across their training, inference, experimentation, and storage phases.
+\item Integrate key parameters from LLMs, hardware, and data centers—such as parameter count, hardware specifications, system power consumption, chip area, and data center efficiency—to effectively model the operational and embodied carbon footprints of LLM agents.
+\item Provide a detailed comparison of various LLM frameworks, leveraging LLMCarbon to compute the carbon footprints associated with different LLM agents. 
+\end{itemize}
+
+% \resumeSubheading
+% {Text Recognition Based on Deep Learning and Android Terminal}{Kaifeng, China}
+% {Advisor: Associate Prof. Miaohui Zhang, Henan Key Laboratory of Big Data Analysis and Processing}{ Apr. 2021 - Jul. 2021}
+% \begin{itemize}[label=$\circ$,leftmargin=0.15in]
+% \setlength\itemsep{-0.1em}
+% \item Developed the back-end by using Python with Flask framework.
+% \item Recognized images after calibrating them by applying the traditional OpenCV image processing method.
+% \item Used Python multiple threads to recognize texts and save images 
+% \end{itemize}
+
+% \resumeSubheading
+% {Image Similarity Matching Based on Deep Learning}{Kaifeng, China}
+% {Data Science and Artificial Intelligence Laboratory, Advisor: Prof. Chongsheng Zhang}{Aug. 2020 - Jul. 2021}
+% \begin{itemize}[label=$\circ$,leftmargin=0.15in]
+% \setlength\itemsep{-0.1em}
+% \item Independently built a high-precision drug packaging dataset containing 236 types of medicine boxes and nearly 12,000 real drug packaging images.
+% \item Designed the Double Stream Siamese Network model for high-precision drug packaging image matching.
+% \item Compared the Double Stream Siamese Network model with several other models.
+% \end{itemize}
+
+% \resumeSubheading
+% {Numerical Simulation and Dynamic Analysis of Tumor Growth Process}{Kaifeng, China}
+% {Advisor: Associate Prof. Guang’an Zou}{May 2020 - Jul. 2020}
+% \begin{itemize}[label=$\circ$,leftmargin=0.15in]
+% \setlength\itemsep{-0.1em}
+% \item Collected actual patient cases and used CT images of tumors at different stages to analyze the causes of tumor growth and the environmental factors affecting it.
+% \item Preprocessed CT images of tumors and built mathematical models to study the growth of brain tumors and kidney tumors. 
+% \item Used finite element method to study the numerical solution of models and analyzed the mechanism of dynamics. 
+% \item Established a computer-assisted diagnosis and treatment system for drug interventional treatment of brain tumors and kidney tumors to find the best treatment.
+% \end{itemize}
+
+% \resumeSubheading
+% {Docker Remote Operation Control Based on RPC Communication}{Kaifeng, China}
+% {Advisor: Associate Prof. Yonghang Yan}{Apr. 2020 - Mar. 2021}
+% \begin{itemize}[label=$\circ$,leftmargin=0.15in]
+% \setlength\itemsep{-0.1em}
+% \item Operated Docker using Python and established Docker connection, startup, etc.
+% \item Maintained local database to record Docker operations.
+% \end{itemize}
+\resumeSubHeadingListEnd
+
+%---------------------PUBLISH--------
+\section{Publication}
+\begin{description}[font=$\bullet$]
+\item {\textbf{Ruhan Wang}, Kishan Panaganti, Dongruo Zhou, "More Memory, Worse Agents: Error Reproduction and Anti-Persistence in LLM Agents", \textit{The Fortieth Conference on Neural Information Processing Systems (NeurIPS, Under Review), 2026}}
+\item {\textbf{Ruhan Wang}, Chengkai Huang, Zhiyong Wang, Rui Wang, Tong Yu, Lina Yao, Dongruo Zhou, "Uncertainty-Aware Federated Reasoning with Large Language Models", \textit{Conference on Language Modeling (COLM, Under Review), 2026}}
+\item {Runze Zhao, Yue Yu, \textbf{Ruhan Wang}, Chunfeng Huang, Dongruo Zhou, \href{https://arxiv.org/abs/2508.02103}{"Instance-Dependent Continuous-Time Reinforcement Learning via Maximum Likelihood Estimation"}, \textit{Forty-Third International Conference on Machine Learning (ICML), 2026}}
+\item {\textbf{Ruhan Wang}, Zhiyong Wang, Chengkai Huang, Rui Wang, Tong Yu, Lina Yao, John C.S. Lui, Dongruo Zhou, \href{https://arxiv.org/abs/2506.07440}{"Federated In-Context Learning: Iterative Refinement for Improved Answer Quality"}, \textit{Forty-Second International Conference on Machine Learning (ICML), 2025}}
+\item {Chengkai Huang, Junda Wu, Yu Xia, Sheldon Yu, \textbf{Ruhan Wang}, Tong Yu, Ruiyi Zhang, Ryan Rossi, Branislav Kveton, Dongruo Zhou, Julian McAuley, Lina Yao, \href{https://arxiv.org/abs/2503.16734}{"Towards Agentic Recommender Systems in the Era of Multimodal Large Language Models"}, \textit{ACM Transactions on Intelligent Systems and Technology (TIST), 2025}}
+\item {Zhishuai Liu, Yu Yang, \textbf{Ruhan Wang}, Pan Xu, Dongruo Zhou, \href{https://arxiv.org/abs/2506.08463}{"How to Provably Improve Return Conditioned Supervised Learning?"}, \textit{arXiv preprint, 2025}}
+\item {\textbf{Ruhan Wang}, Ye Wang, Jing Liu, Toshiaki Koike-Akino, \href{https://arxiv.org/abs/2411.04217}{"Quantum Diffusion Models for Few-Shot Learning"}, \textit{2025 IEEE International Conference on AI and Data Analytics (ICAD), 2025; AAAI 2024 Quantum Computing and Artificial Intelligence Workshop, 2024}}
+\item {\textbf{Ruhan Wang}, Dongruo Zhou, \href{https://proceedings.mlr.press/v283/wang25a.html}{"Safe Decision Transformer with Learning-based Constraints"}, \textit{7th Annual Learning for Dynamics and Control Conference (L4DC), 2025; NeurIPS 2024 Safe Generative AI Workshop, 2024}}
+\item {\textbf{Ruhan Wang}, Yu Yang, Zhishuai Liu, Dongruo Zhou, Pan Xu, \href{https://arxiv.org/abs/2410.23450}{"Return Augmented Decision Transformer for Off-Dynamics Reinforcement Learning"}, \textit{Transactions on Machine Learning Research (TMLR), 2024}}
+\item {Ahmad Faiz, Sotaro Kaneda, \textbf{Ruhan Wang}, Rita Osi, Parteek Sharma, Fan Chen, Lei Jiang, \href{https://arxiv.org/abs/2309.14393}{"LLMCarbon: Modeling the End-to-End Carbon Footprint of Large Language Models"}, \textit{The Twelfth International Conference on Learning Representations (ICLR Oral), 2024}}
+\item {\textbf{Ruhan Wang}, Lei Jiang, Fahiz Baba-Yara, Fan Chen, \href{https://arxiv.org/abs/2403.11048}{"JustQ: Automated Deployment of Fair and Accurate Quantum Neural Networks"}, \textit{29th Asia and South Pacific Design Automation Conference (ASP-DAC), 2024}}
+\item {\textbf{Ruhan Wang}, Phil Richerme, Fan Chen, \href{https://iopscience.iop.org/article/10.1088/2058-9565/acf1c7}{"A Hybrid Quantum-Classical Neural Network for Learning Transferable Visual Representation"}, \textit{Quantum Science and Technology, 2023}}
+\item {\textbf{Ruhan Wang}, Ruixin Qiao, Yukang Zou, \href{https://www.spiedigitallibrary.org/conference-proceedings-of-spie/12287/122871H/A-brief-analysis-on-damaged-building-classification--optimizer-and/10.1117/12.2640965.full}{"A Brief Analysis on Damaged Building Classification: Optimizer and Learning Rate"}, \textit{2022 International Conference on Cloud Computing, Performance Computing and Deep Learning (SPIE 12287), 2022}}
+\item {Kaifang Li, Guancheng Hui, \textbf{Ruhan Wang}, Miaohui Zhang, \href{https://www.researching.cn/ArticlePdf/m00002/2022/59/10/1015007.pdf}{"Person Re-Identification Based on Generative Adversarial Network and Self-Calibrated Convolution"}, \textit{Laser \& Optoelectronics Progress, 2022}}
+\end{description}
+
+
+%-----------PROJECTS-----------------
+\section{Academic Experience}
+\begin{description}[font=$\bullet$]
+\item \textbf{Luddy AI Center’s Open House event}: Prepare a presentation for research project "A Hybrid Quantum-Classical Neural Network for Learning Transferable Visual Representation". (Mar. 2023, Bloomington, US)
+\item \textbf{Facial Recognition}: Self-studied OpenCV related image processing, and image noise reduction and image transformation in digital image processing. Used deep learning related algorithms to match face similarity and self-studied deep learning and Pytorch framework. (Mar. 2021, Kaifeng, China)
+\item \textbf{The Realization of Forward Transmission and Reverse Transmission of BP Neural Network}: Studied the process of forward transmission and reverse transmission of BP Neural Network. Mastered different loss functions in deep learning and the characteristics and differences of the optimizer. Used Python to complete the code. (Apr. 2021, Kaifeng, China)
+% \item \textbf{The Realization of Malloc}: Learned and mastered the knowledge related to dynamic memory allocation in the operating system. Studied the principles of the implementation of Malloc and Free, and realized them by C language. (Nov. 2020, Kaifeng, China)
+\item \textbf{Campus Sign-in System Based on Mobile Phone Positioning}: Created tables and conducted operations such as adding, deleting, modifying and checking tables. Deployed the cloud server to manage the deployment of the App backend. (Sep.2020, Kaifeng, China)
+\end{description}
+
+\end{document}

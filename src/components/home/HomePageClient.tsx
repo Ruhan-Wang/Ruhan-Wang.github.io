@@ -34,6 +34,7 @@ export interface HomePageLocaleData {
   author: SiteConfig['author'];
   social: SiteConfig['social'];
   features: SiteConfig['features'];
+  announcement?: SiteConfig['announcement'];
   enableOnePageMode?: boolean;
   researchInterests?: string[];
   pagesToShow: PageData[];
@@ -55,6 +56,13 @@ export default function HomePageClient({ dataByLocale, defaultLocale }: HomePage
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 bg-background min-h-screen">
+      {data.announcement?.enabled && data.announcement.text && (
+        <div className="mb-8 border-l-4 border-red-600 bg-red-50 px-5 py-4 rounded-r-md">
+          <p className="text-red-700 font-bold text-base sm:text-lg leading-snug">
+            {data.announcement.text}
+          </p>
+        </div>
+      )}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
         <div className="lg:col-span-1">
           <Profile

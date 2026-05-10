@@ -28,6 +28,10 @@ export interface SiteConfig {
     linkedin?: string;
     [key: string]: string | string[] | undefined;
   };
+  announcement?: {
+    enabled?: boolean;
+    text?: string;
+  };
   features: {
     enable_likes: boolean;
     enable_one_page_mode?: boolean;

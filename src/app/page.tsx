@@ -131,6 +131,7 @@ function loadPageDataForLocale(locale: string | undefined): HomePageLocaleData {
     author: localeConfig.author,
     social: localeConfig.social,
     features: localeConfig.features,
+    announcement: localeConfig.announcement,
     enableOnePageMode,
     researchInterests,
     pagesToShow,

@@ -25,6 +25,10 @@ google_scholar = "https://scholar.google.com/citations?user=vHgJIPoAAAAJ&hl=en"
 github = "https://github.com/Ruhan-Wang"
 linkedin = "https://www.linkedin.com/in/ruhan-wang-075922255/"
 
+[announcement]
+enabled = true
+text = "I am on the 2026 Job Market — actively seeking opportunities in both industry and academia."
+
 [features]
 # Show a like button on the about page
 enable_likes = true

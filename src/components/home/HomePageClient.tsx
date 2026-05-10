@@ -66,14 +66,18 @@ export default function HomePageClient({ dataByLocale, defaultLocale }: HomePage
             <ReactMarkdown
               components={{
                 p: ({ children }) => <p className="m-0">{children}</p>,
-                a: ({ ...props }) => (
-                  <a
-                    {...props}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="underline underline-offset-2 hover:text-amber-900 transition-colors"
-                  />
-                ),
+                a: ({ href, ...props }) => {
+                  const isMailto = typeof href === 'string' && href.startsWith('mailto:');
+                  return (
+                    <a
+                      {...props}
+                      href={href}
+                      target={isMailto ? undefined : '_blank'}
+                      rel={isMailto ? undefined : 'noopener noreferrer'}
+                      className="underline underline-offset-2 hover:text-amber-900 transition-colors"
+                    />
+                  );
+                },
               }}
             >
               {data.announcement.text}

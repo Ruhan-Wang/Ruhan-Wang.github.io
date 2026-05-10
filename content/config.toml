@@ -1,6 +1,7 @@
 [site]
 title = "Ruhan Wang"
-description = "PhD Candidate at Indiana University."
+description = "Ruhan Wang (王汝涵) — Ph.D. candidate in Computer Engineering at Indiana University, advised by Prof. Dongruo Zhou. Research on agentic reinforcement learning, federated reasoning, and self-improving large language models."
+url = "https://ruhan-wang.github.io"
 favicon = "/favicon.svg"
 last_updated = "May 9, 2026"
 

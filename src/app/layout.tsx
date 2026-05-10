@@ -13,25 +13,52 @@ export async function generateMetadata(): Promise<Metadata> {
   const runtimeI18n = getRuntimeI18nConfig(config.i18n);
   const openGraphLocale = runtimeI18n.defaultLocale === 'zh' ? 'zh_CN' : 'en_US';
 
+  const siteUrl = config.site.url || 'https://ruhan-wang.github.io';
+
   return {
+    metadataBase: new URL(siteUrl),
     title: {
       default: config.site.title,
       template: `%s | ${config.site.title}`,
     },
     description: config.site.description,
-    keywords: [config.author.name, 'PhD', 'Research', config.author.institution],
-    authors: [{ name: config.author.name }],
+    keywords: [
+      config.author.name,
+      'Ruhan Wang',
+      '王汝涵',
+      'PhD',
+      'Research',
+      'Reinforcement Learning',
+      'Large Language Models',
+      'Agentic AI',
+      'Federated Learning',
+      config.author.institution,
+    ],
+    authors: [{ name: config.author.name, url: siteUrl }],
     creator: config.author.name,
     publisher: config.author.name,
+    alternates: {
+      canonical: siteUrl,
+    },
     icons: {
       icon: config.site.favicon,
     },
     openGraph: {
       type: 'website',
       locale: openGraphLocale,
+      url: siteUrl,
       title: config.site.title,
       description: config.site.description,
       siteName: `${config.author.name}'s Academic Website`,
+    },
+    twitter: {
+      card: 'summary',
+      title: config.site.title,
+      description: config.site.description,
+    },
+    robots: {
+      index: true,
+      follow: true,
     },
   };
 }
@@ -126,10 +153,36 @@ export default function RootLayout({
     lastUpdatedByLocale,
   } = buildLocalizedConfigMaps(targetLocales);
 
+  const siteUrl = config.site.url || 'https://ruhan-wang.github.io';
+  const personJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: 'Ruhan Wang',
+    alternateName: '王汝涵',
+    url: siteUrl,
+    image: `${siteUrl}${config.author.avatar}`,
+    jobTitle: config.author.title,
+    affiliation: {
+      '@type': 'CollegeOrUniversity',
+      name: config.author.institution,
+    },
+    description: config.site.description,
+    sameAs: [
+      config.social.google_scholar,
+      config.social.github,
+      config.social.linkedin,
+      config.social.orcid,
+    ].filter(Boolean),
+  };
+
   return (
     <html lang={runtimeI18n.defaultLocale} className="scroll-smooth" suppressHydrationWarning>
       <head>
         <link rel="icon" href={config.site.favicon} type="image/svg+xml" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+        />
         <link rel="dns-prefetch" href="https://jialeliu.com" />
         <link rel="preconnect" href="https://jialeliu.com" crossOrigin="" />
         <link

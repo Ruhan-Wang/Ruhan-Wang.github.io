@@ -15,12 +15,12 @@ date = "2026-04"
 content = "🏅 Recognized as a **Top 25% Reviewer** for ICLR 2026."
 
 [[news]]
-date = "2025-06"
-content = "🛫 Attended **L4DC 2025** in Ann Arbor, MI to present *Safe Decision Transformer with Learning-based Constraints* — our Constrained Q-learning Decision Transformer (CQDT) for safe offline RL. Joint work with [Prof. Dongruo Zhou](https://sites.google.com/view/drzhou); previously presented at the NeurIPS 2024 Safe Generative AI Workshop."
-
-[[news]]
 date = "2025-07"
 content = "🛫 Attended **ICML 2025** in Vancouver to present *Federated In-Context Learning: Iterative Refinement for Improved Answer Quality* — a privacy-preserving Fed-ICL framework with theoretical equivalence to established FL algorithms. With Zhiyong Wang, Chengkai Huang, Rui Wang, Tong Yu, Lina Yao, John C.S. Lui, and [Prof. Dongruo Zhou](https://sites.google.com/view/drzhou)."
+
+[[news]]
+date = "2025-06"
+content = "🛫 Attended **L4DC 2025** in Ann Arbor, MI to present *Safe Decision Transformer with Learning-based Constraints* — our Constrained Q-learning Decision Transformer (CQDT) for safe offline RL. Joint work with [Prof. Dongruo Zhou](https://sites.google.com/view/drzhou); previously presented at the NeurIPS 2024 Safe Generative AI Workshop."
 
 [[news]]
 date = "2025-04"

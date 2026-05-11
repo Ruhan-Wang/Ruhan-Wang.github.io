@@ -23,6 +23,10 @@ date = "2025-07"
 content = "🛫 Attended **ICML 2025** in Vancouver to present *Federated In-Context Learning: Iterative Refinement for Improved Answer Quality* — a privacy-preserving Fed-ICL framework with theoretical equivalence to established FL algorithms. With Zhiyong Wang, Chengkai Huang, Rui Wang, Tong Yu, Lina Yao, John C.S. Lui, and [Prof. Dongruo Zhou](https://sites.google.com/view/drzhou)."
 
 [[news]]
+date = "2025-04"
+content = "🎓 Advanced to **Ph.D. Candidacy** in Computer Engineering at Indiana University after passing the qualifying examination."
+
+[[news]]
 date = "2025-03"
 content = "📚 Our work *Towards Agentic Recommender Systems in the Era of Multimodal LLMs* has been accepted to **ACM TIST** — a formal LLM-ARS framework spanning user profiling, memory, planning, and action selection, identifying seven open challenges. Collaboration led by Chengkai Huang with the team at UNSW, Adobe Research, UCSD, and Indiana University."
 

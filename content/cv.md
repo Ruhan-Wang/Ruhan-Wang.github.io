@@ -20,18 +20,18 @@
 ## Working Experience
 
 ![Tencent](https://www.google.com/s2/favicons?domain=tencent.com&sz=64) **Ph.D. Research Intern**, Tencent AI Lab (Hunyuan Frontier Lab), *May 2026 - Aug. 2026*
-- Host: [Kishan Panaganti](https://sites.google.com/a/tamu.edu/kpb/home)
+- Host: [Dr. Kishan Panaganti](https://sites.google.com/a/tamu.edu/kpb/home)
 - Working on Agentic Reinforcement Learning for large language model agents
 
 ![MERL](https://www.google.com/s2/favicons?domain=merl.com&sz=64) **Ph.D. Research Intern**, Mitsubishi Electric Research Laboratories, *May 2024 - Aug. 2024*
-- Host: [Toshiaki Koike-Akino](https://scholar.google.com/citations?user=ZMo2ZM0AAAAJ&hl=en)
+- Host: [Dr. Toshiaki Koike-Akino](https://scholar.google.com/citations?user=ZMo2ZM0AAAAJ&hl=en)
 - Worked on quantum machine learning and generative models
 
 ![IU](https://www.google.com/s2/favicons?domain=iu.edu&sz=64) **Graduate Student Researcher**, Machine Learning Lab, Indiana University, *Aug. 2023 - Present*
-- Advisor: [Dongruo Zhou](https://sites.google.com/view/drzhou)
+- Advisor: [Prof. Dongruo Zhou](https://sites.google.com/view/drzhou)
 
 ![IU](https://www.google.com/s2/favicons?domain=iu.edu&sz=64) **Graduate Student Researcher**, Quantum Computing Lab, Indiana University, *Aug. 2022 - Aug. 2023*
-- Advisor: Dr. Fan Chen
+- Advisor: [Prof. Fan Chen](https://homes.luddy.indiana.edu/fc7/)
 
 ## Teaching Experience
 

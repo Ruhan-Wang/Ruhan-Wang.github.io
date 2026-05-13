@@ -43,7 +43,7 @@
 
 ## Professional Services
 
-- **Conference Reviewer**: International Conference on Machine Learning (ICML)
+- **Conference Reviewer**: International Conference on Machine Learning (ICML) — **Gold Reviewer, 2026**
 - **Conference Reviewer**: Annual Conference on Neural Information Processing Systems (NeurIPS)
 - **Conference Reviewer**: International Conference on Learning Representations(ICLR)(Top 25% Reviewer)
 - **Conference Reviewer**: Association for the Advancement of Artificial Intelligence (AAAI)

@@ -131,17 +131,20 @@ function getHighlightNames(locale?: string): string[] {
   };
 
   addName(baseConfig.author.name);
+  baseConfig.author.highlight_authors?.forEach(addName);
 
   if (runtimeI18n.enabled) {
     runtimeI18n.locales.forEach((localeCode) => {
       const localizedConfig = getConfig(localeCode);
       addName(localizedConfig.author.name);
+      localizedConfig.author.highlight_authors?.forEach(addName);
     });
   }
 
   if (locale) {
     const currentLocaleConfig = getConfig(locale);
     addName(currentLocaleConfig.author.name);
+    currentLocaleConfig.author.highlight_authors?.forEach(addName);
   }
 
   return Array.from(names);

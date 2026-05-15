@@ -7,6 +7,7 @@ last_updated = "May 9, 2026"
 
 [author]
 name = "Ruhan Wang / 王汝涵"
+highlight_authors = ["Ruhan Wang", "王汝涵"]
 title = "PhD Candidate"
 institution = "Indiana University"
 avatar = "/ruhan-wang.png"

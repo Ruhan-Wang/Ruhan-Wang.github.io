@@ -16,6 +16,7 @@ export interface SiteConfig {
     title: string;
     institution: string;
     avatar: string;
+    highlight_authors?: string[];
   };
   social: {
     email?: string;

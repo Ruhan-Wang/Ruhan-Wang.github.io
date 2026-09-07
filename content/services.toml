@@ -5,28 +5,28 @@ description = "Professional services and community involvement."
 [[items]]
 title = "Conference Reviewer — ICLR"
 subtitle = "International Conference on Learning Representations"
-date = "2026"
-content = "Recognized as a **Top 25% Reviewer** for ICLR 2026."
+date = "2026 – 2027"
+content = "Reviewer for ICLR 2026 and 2027. Recognized as a **Top 25% Reviewer** for ICLR 2026."
 tags = ["Conference", "Reviewer"]
 
 [[items]]
 title = "Conference Reviewer — ICML"
 subtitle = "International Conference on Machine Learning"
-date = "2025 – 2026"
-content = "Recognized as a **Gold Reviewer** for ICML 2026, placing among the top reviewers for the conference. Reviewed submissions on reinforcement learning, large language models, and federated learning."
+date = "2025 – 2027"
+content = "Reviewer for ICML 2025–2027. Recognized as a **Gold Reviewer** for ICML 2026, placing among the top reviewers for the conference."
 tags = ["Conference", "Reviewer"]
 
 [[items]]
 title = "Conference Reviewer — NeurIPS"
 subtitle = "Annual Conference on Neural Information Processing Systems"
-date = "2025 – 2026"
+date = "2025 – 2027"
 content = "Reviewed submissions on reinforcement learning, large language models, and federated learning."
 tags = ["Conference", "Reviewer"]
 
 [[items]]
 title = "Conference Reviewer — AAAI"
 subtitle = "Association for the Advancement of Artificial Intelligence"
-date = "2025 – 2026"
+date = "2025 – 2027"
 content = "Reviewed submissions across machine learning and quantum machine learning tracks."
 tags = ["Conference", "Reviewer"]
 
@@ -40,6 +40,6 @@ tags = ["Journal", "Reviewer"]
 [[items]]
 title = "Journal Reviewer — Transactions on Machine Learning Research"
 subtitle = "TMLR"
-date = "2026"
-content = "Reviewed manuscripts in machine learning and reinforcement learning."
+date = "2026 – Present"
+content = "Reviewer for manuscripts in machine learning and reinforcement learning."
 tags = ["Journal", "Reviewer"]

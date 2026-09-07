@@ -72,7 +72,7 @@ Cambridge, MA
 
 ## Professional Recognition & Service
 
-- **Conference reviewing:** ICML (2025, 2026; **Gold Reviewer**, 2026), NeurIPS (2025, 2026), AAAI (2025, 2026), and ICLR (**Top 25% Reviewer**, 2026).
+- **Conference reviewing:** ICML (2025–2027; **Gold Reviewer**, 2026), NeurIPS (2025–2027), AAAI (2025–2027), and ICLR (2026–2027; **Top 25% Reviewer**, 2026).
 - **Journal reviewing:** *Measurement Science and Technology* and *Transactions on Machine Learning Research (TMLR)*.
 - **Teaching:** Reinforcement Learning for LLMs, Principles of Machine Learning, Data Mining, Engineering Cloud Computing, and Deep Learning Architecture and Hardware Acceleration.
 

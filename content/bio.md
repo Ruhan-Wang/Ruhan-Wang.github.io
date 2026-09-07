@@ -1,4 +1,4 @@
-I am a Ph.D. candidate in Computer Engineering at Indiana University, advised by [Prof. Dongruo Zhou](https://sites.google.com/view/drzhou). My research focuses on **LLM agents, reinforcement learning for LLMs, and scalable post-training**. I build self-evolving, tool-using agents that interact with environments, complete long-horizon tasks, and improve through execution feedback.
+I am a Ph.D. candidate in Computer Engineering at Indiana University, advised by [Prof. Dongruo Zhou](https://sites.google.com/view/drzhou). My research focuses on **LLM agents, agent harnesses, reinforcement learning for LLMs, and scalable post-training**. I build self-evolving, tool-using agents that interact with environments, complete long-horizon tasks, and improve through execution feedback.
 
 My recent work spans agent harness design and interpretability, long-horizon agent evaluation, efficient RLVR, uncertainty-aware federated reasoning, and privacy-preserving LLM collaboration. I also work on multimodal agentic recommender systems and offline and safe reinforcement learning.
 

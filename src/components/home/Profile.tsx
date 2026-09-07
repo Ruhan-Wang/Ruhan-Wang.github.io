@@ -331,7 +331,7 @@ export default function Profile({ author, social, features, researchInterests }:
                                 }`}
                         >
                             {hasLiked ? (
-                                <FoxLike className="h-5 w-9 -my-1" />
+                                <FoxLike className="h-7 w-auto -my-2" />
                             ) : (
                                 <HeartIcon className="h-4 w-4" />
                             )}

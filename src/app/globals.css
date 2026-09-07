@@ -255,42 +255,40 @@ body {
 }
 
 /* Small fox details */
-@keyframes fox-tail-wag {
+@keyframes fox-like-wiggle {
   0%, 100% {
-    transform: rotate(0);
+    transform: translateY(0) rotate(0) scale(1);
   }
   35% {
-    transform: rotate(-18deg);
+    transform: translateY(-2px) rotate(-8deg) scale(1.06);
   }
   70% {
-    transform: rotate(13deg);
+    transform: translateY(-1px) rotate(7deg) scale(1.03);
   }
 }
 
-@keyframes fox-breathe {
+@keyframes footer-fox-float {
   0%, 100% {
-    transform: translateY(0) scaleY(1);
+    transform: translateY(0) rotate(0);
   }
   50% {
-    transform: translateY(1px) scaleY(0.98);
+    transform: translateY(-2px) rotate(1deg);
   }
 }
 
-.fox-tail-wag {
-  transform-box: fill-box;
-  transform-origin: 12% 70%;
-  animation: fox-tail-wag 520ms ease-in-out 3;
+.fox-like {
+  transform-origin: center bottom;
+  animation: fox-like-wiggle 520ms ease-in-out 3;
 }
 
-.sleeping-fox-body {
-  transform-box: fill-box;
+.footer-fox {
   transform-origin: center bottom;
-  animation: fox-breathe 3.8s ease-in-out infinite;
+  animation: footer-fox-float 4s ease-in-out infinite;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .fox-tail-wag,
-  .sleeping-fox-body {
+  .fox-like,
+  .footer-fox {
     animation: none;
     transition: none;
   }

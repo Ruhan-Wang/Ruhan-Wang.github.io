@@ -8,10 +8,10 @@ Computer Engineering Ph.D. working on **LLM agents, reinforcement learning for L
 
 ## Education
 
-**Indiana University**, Ph.D. in Computer Engineering, *Aug. 2022 – Feb. 2027 (expected)*<br>
+**Indiana University**, Ph.D. in Computer Engineering, *Aug. 2022 – Feb. 2027 (expected)*\
 Bloomington, IN
 
-**Indiana University**, M.S. in Computer Engineering, *Aug. 2022 – Dec. 2024*<br>
+**Indiana University**, M.S. in Computer Engineering, *Aug. 2022 – Dec. 2024*\
 Bloomington, IN
 
 ## Core Expertise
@@ -23,7 +23,7 @@ Bloomington, IN
 ## Experience
 
 ### Tencent AI Lab · Hunyuan Frontier Lab
-**Ph.D. Research Intern · Agentic Reinforcement Learning**, *May 2026 – Present*<br>
+**Ph.D. Research Intern · Agentic Reinforcement Learning**, *May 2026 – Present*\
 Bellevue, WA
 
 - Introduced the [Harness Handbook](https://arxiv.org/abs/2607.13285), a behavior-centric representation that maps high-level system behaviors to concrete implementation sites.
@@ -31,7 +31,7 @@ Bellevue, WA
 - Built an execution-feedback loop that identifies failures, proposes harness changes, and validates their effects for iterative agent improvement.
 
 ### Indiana University · Machine Learning Lab
-**Graduate Researcher**, *Aug. 2023 – Present*<br>
+**Graduate Researcher**, *Aug. 2023 – Present*\
 Advisor: [Prof. Dongruo Zhou](https://sites.google.com/view/drzhou) · Bloomington, IN
 
 - Developed dynamic batch scheduling for efficient RLVR, reducing optimizer updates by up to 79% and wall-clock time by 9.3% while preserving Pass@k.
@@ -40,7 +40,7 @@ Advisor: [Prof. Dongruo Zhou](https://sites.google.com/view/drzhou) · Bloomingt
 - Worked on multimodal agentic recommendation, off-dynamics policy transfer, and safe offline reinforcement learning.
 
 ### Mitsubishi Electric Research Laboratories
-**Ph.D. Research Intern · Generative AI**, *May 2024 – Aug. 2024*<br>
+**Ph.D. Research Intern · Generative AI**, *May 2024 – Aug. 2024*\
 Cambridge, MA
 
 - Developed three label-guided quantum diffusion algorithms for few-shot learning, achieving 79.5% mean accuracy across 12 task settings and validating them on noisy IBM quantum hardware.

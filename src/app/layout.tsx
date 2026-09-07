@@ -42,7 +42,9 @@ export async function generateMetadata(): Promise<Metadata> {
       canonical: siteUrl,
     },
     icons: {
-      icon: config.site.favicon,
+      icon: [{ url: config.site.favicon, type: 'image/png', sizes: '64x64' }],
+      shortcut: [{ url: config.site.favicon, type: 'image/png' }],
+      apple: [{ url: config.site.favicon, type: 'image/png', sizes: '64x64' }],
     },
     openGraph: {
       type: 'website',
@@ -179,7 +181,6 @@ export default function RootLayout({
   return (
     <html lang={runtimeI18n.defaultLocale} className="scroll-smooth" suppressHydrationWarning>
       <head>
-        <link rel="icon" href={config.site.favicon} type="image/svg+xml" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}

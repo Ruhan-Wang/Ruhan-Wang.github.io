@@ -10,11 +10,11 @@ import {
     MapPinIcon
 } from '@heroicons/react/24/outline';
 import { MapPinIcon as MapPinSolidIcon, EnvelopeIcon as EnvelopeSolidIcon } from '@heroicons/react/24/solid';
-import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid';
 import { Github, Linkedin, Pin } from 'lucide-react';
 import type { SiteConfig } from '@/lib/config';
 import { useMessages } from '@/lib/i18n/useMessages';
 import { trackEvent } from '@/lib/analytics';
+import { FoxLike, FoxPeek } from '@/components/ui/FoxMascots';
 
 // Custom ORCID icon component
 const OrcidIcon = ({ className }: { className?: string }) => (
@@ -114,15 +114,18 @@ export default function Profile({ author, social, features, researchInterests }:
             className="sticky top-8"
         >
             {/* Profile Image */}
-            <div className="w-64 h-64 mx-auto mb-6 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105">
-                <Image
-                    src={author.avatar}
-                    alt={author.name}
-                    width={256}
-                    height={256}
-                    className="w-full h-full object-cover object-[32%_center]"
-                    priority
-                />
+            <div className="relative w-64 h-64 mx-auto mb-6 group">
+                <div className="w-full h-full rounded-2xl overflow-hidden shadow-lg group-hover:shadow-xl transition-all duration-200 group-hover:scale-[1.02]">
+                    <Image
+                        src={author.avatar}
+                        alt={author.name}
+                        width={256}
+                        height={256}
+                        className="w-full h-full object-cover object-[32%_center]"
+                        priority
+                    />
+                </div>
+                <FoxPeek className="fox-peek pointer-events-none absolute -top-7 -right-5 z-10 w-[4.75rem] h-[4.75rem] drop-shadow-md" />
             </div>
 
             {/* Name and Title */}
@@ -331,7 +334,7 @@ export default function Profile({ author, social, features, researchInterests }:
                                 }`}
                         >
                             {hasLiked ? (
-                                <HeartSolidIcon className="h-4 w-4" />
+                                <FoxLike className="h-5 w-9 -my-1" />
                             ) : (
                                 <HeartIcon className="h-4 w-4" />
                             )}
@@ -347,7 +350,7 @@ export default function Profile({ author, social, features, researchInterests }:
                                     exit={{ opacity: 0, y: -20, scale: 0.8 }}
                                     className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-full bg-accent text-white px-4 py-2 rounded-lg text-sm font-medium shadow-lg whitespace-nowrap"
                                 >
-                                    {messages.profile.thanks} 😊
+                                    {messages.profile.thanks} 🦊
                                     <div className="absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-accent"></div>
                                 </motion.div>
                             )}

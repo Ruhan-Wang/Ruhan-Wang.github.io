@@ -14,7 +14,7 @@ import { Github, Linkedin, Pin } from 'lucide-react';
 import type { SiteConfig } from '@/lib/config';
 import { useMessages } from '@/lib/i18n/useMessages';
 import { trackEvent } from '@/lib/analytics';
-import { FoxLike, FoxPeek } from '@/components/ui/FoxMascots';
+import { FoxLike } from '@/components/ui/FoxMascots';
 
 // Custom ORCID icon component
 const OrcidIcon = ({ className }: { className?: string }) => (
@@ -114,18 +114,15 @@ export default function Profile({ author, social, features, researchInterests }:
             className="sticky top-8"
         >
             {/* Profile Image */}
-            <div className="relative w-64 h-64 mx-auto mb-6 group">
-                <div className="w-full h-full rounded-2xl overflow-hidden shadow-lg group-hover:shadow-xl transition-all duration-200 group-hover:scale-[1.02]">
-                    <Image
-                        src={author.avatar}
-                        alt={author.name}
-                        width={256}
-                        height={256}
-                        className="w-full h-full object-cover object-[32%_center]"
-                        priority
-                    />
-                </div>
-                <FoxPeek className="fox-peek pointer-events-none absolute -top-7 -right-5 z-10 w-[4.75rem] h-[4.75rem] drop-shadow-md" />
+            <div className="w-64 h-64 mx-auto mb-6 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-200 hover:scale-105">
+                <Image
+                    src={author.avatar}
+                    alt={author.name}
+                    width={256}
+                    height={256}
+                    className="w-full h-full object-cover object-[32%_center]"
+                    priority
+                />
             </div>
 
             {/* Name and Title */}

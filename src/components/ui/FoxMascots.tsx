@@ -2,31 +2,6 @@ interface FoxProps {
   className?: string;
 }
 
-export function FoxPeek({ className = '' }: FoxProps) {
-  return (
-    <svg
-      viewBox="0 0 96 92"
-      className={className}
-      aria-hidden="true"
-      focusable="false"
-    >
-      <path d="M18 33 15 7 39 25Z" fill="#C96C3B" stroke="#7C3A22" strokeWidth="3" strokeLinejoin="round" />
-      <path d="m78 33 3-26-24 18Z" fill="#C96C3B" stroke="#7C3A22" strokeWidth="3" strokeLinejoin="round" />
-      <path d="m21 14 4 15 10-7Z" fill="#F7C9B3" />
-      <path d="m75 14-4 15-10-7Z" fill="#F7C9B3" />
-      <path d="M17 42C17 24 31 16 48 16s31 8 31 26c0 20-12 34-31 34S17 62 17 42Z" fill="#D97745" stroke="#7C3A22" strokeWidth="3" />
-      <path d="M22 46c8 0 17 4 26 20 9-16 18-20 26-20-2 19-11 30-26 30S24 65 22 46Z" fill="#FFF8ED" />
-      <path d="M31 40c3-3 7-3 10 0" fill="none" stroke="#38251F" strokeWidth="3" strokeLinecap="round" />
-      <path d="M55 40c3-3 7-3 10 0" fill="none" stroke="#38251F" strokeWidth="3" strokeLinecap="round" />
-      <path d="m43 57 5-4 5 4-5 5Z" fill="#38251F" />
-      <path d="M48 62v5" stroke="#38251F" strokeWidth="2.5" strokeLinecap="round" />
-      <ellipse cx="27" cy="80" rx="12" ry="8" fill="#D97745" stroke="#7C3A22" strokeWidth="3" />
-      <ellipse cx="69" cy="80" rx="12" ry="8" fill="#D97745" stroke="#7C3A22" strokeWidth="3" />
-      <path d="M22 80h10M64 80h10" stroke="#FFF8ED" strokeWidth="3" strokeLinecap="round" />
-    </svg>
-  );
-}
-
 export function FoxLike({ className = '' }: FoxProps) {
   return (
     <svg

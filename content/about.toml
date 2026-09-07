@@ -19,7 +19,7 @@ id = "featured_publications"
 type = "publications"
 title = "Selected Publications"
 filter = "selected"
-limit = 7
+limit = 6
 
 [[sections]]
 id = "news"

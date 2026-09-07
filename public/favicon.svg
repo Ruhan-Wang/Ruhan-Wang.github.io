@@ -1,3 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="32" height="32">
-  <text x="50%" y="50%" dominant-baseline="central" text-anchor="middle" font-size="80">🌱</text>
-</svg> 
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <path d="M8 25 11 5l17 13M56 25 53 5 36 18" fill="#d97745" stroke="#6f351f" stroke-width="3" stroke-linejoin="round"/>
+  <path d="m13 11 3 12 8-6M51 11l-3 12-8-6" fill="#f7c9b3"/>
+  <path d="M8 31C8 16 19 11 32 11s24 5 24 20c0 17-9 27-24 27S8 48 8 31Z" fill="#e17b45" stroke="#6f351f" stroke-width="3"/>
+  <path d="M12 34c7 0 13 4 20 18 7-14 13-18 20-18-2 15-9 24-20 24S14 49 12 34Z" fill="#fff7ed"/>
+  <ellipse cx="23" cy="31" rx="3.5" ry="4.5" fill="#2f211c"/>
+  <ellipse cx="41" cy="31" rx="3.5" ry="4.5" fill="#2f211c"/>
+  <circle cx="22" cy="29.5" r="1" fill="#fff"/>
+  <circle cx="40" cy="29.5" r="1" fill="#fff"/>
+  <path d="m27 42 5-3 5 3-5 5Z" fill="#2f211c"/>
+</svg>

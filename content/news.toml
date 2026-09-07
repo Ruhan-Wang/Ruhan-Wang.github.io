@@ -1,18 +1,18 @@
 [[news]]
 date = "2026-08-05"
-content = "🧩 Released *[Recursive Synthesis for Long-Horizon Terminal Tasks](https://arxiv.org/abs/2608.05466)*, our Tencent AI Lab work on recursively constructing verified long-horizon terminal-agent tasks at scale."
+content = "📄 Released *[Recursive Synthesis for Long-Horizon Terminal Tasks](https://arxiv.org/abs/2608.05466)*, our Tencent AI Lab work on recursively constructing verified long-horizon terminal-agent tasks at scale."
 
 [[news]]
 date = "2026-07-21"
-content = "⚡ Released *[Stale but Stable: Staleness-Adaptive Trust Regions for Stabilizing Asynchronous Reinforcement Learning](https://arxiv.org/abs/2607.18722)*, our Tencent AI Lab work on stabilizing asynchronous RL with staleness-aware trust regions."
+content = "📄 Released *[Stale but Stable: Staleness-Adaptive Trust Regions for Stabilizing Asynchronous Reinforcement Learning](https://arxiv.org/abs/2607.18722)*, our Tencent AI Lab work on stabilizing asynchronous RL with staleness-aware trust regions."
 
 [[news]]
 date = "2026-07-14"
-content = "🛠️ Released *[Harness Handbook](https://arxiv.org/abs/2607.13285)*, our Tencent AI Lab work introducing a behavior-centric representation that makes evolving agent harnesses readable, navigable, and editable."
+content = "📄 Released *[Harness Handbook](https://arxiv.org/abs/2607.13285)*, our Tencent AI Lab work introducing a behavior-centric representation that makes evolving agent harnesses readable, navigable, and editable."
 
 [[news]]
 date = "2026-07-09"
-content = "🧪 Released *[Long-Horizon-Terminal-Bench](https://arxiv.org/abs/2607.08964)*, our Tencent AI Lab benchmark of 46 tasks across nine categories with dense reward-based grading for long-horizon terminal agents."
+content = "📄 Released *[Long-Horizon-Terminal-Bench](https://arxiv.org/abs/2607.08964)*, our Tencent AI Lab benchmark of 46 tasks across nine categories with dense reward-based grading for long-horizon terminal agents."
 
 [[news]]
 date = "2026-07-08"
@@ -24,7 +24,7 @@ content = "🏅 Recognized as a **Gold Reviewer** for **ICML 2026**, placing amo
 
 [[news]]
 date = "2026-05"
-content = "🚀 Started my Ph.D. Research Internship at **Tencent AI Lab (Hunyuan Frontier Lab)** in Bellevue, WA, hosted by [Dr. Kishan Panaganti](https://sites.google.com/a/tamu.edu/kpb/home). Working on **Agentic Reinforcement Learning** for large language model agents."
+content = "💼 Started my Ph.D. Research Internship at **Tencent AI Lab (Hunyuan Frontier Lab)** in Bellevue, WA, hosted by [Dr. Kishan Panaganti](https://sites.google.com/a/tamu.edu/kpb/home). Working on **Agentic Reinforcement Learning** for large language model agents."
 
 [[news]]
 date = "2026-05"
@@ -40,11 +40,11 @@ content = "🏅 Recognized as a **Top 25% Reviewer** for ICLR 2026."
 
 [[news]]
 date = "2025-07"
-content = "🛫 Attended **ICML 2025** in Vancouver to present *Federated In-Context Learning: Iterative Refinement for Improved Answer Quality* — a privacy-preserving Fed-ICL framework with theoretical equivalence to established FL algorithms. With Zhiyong Wang, Chengkai Huang, Rui Wang, Tong Yu, Lina Yao, John C.S. Lui, and [Prof. Dongruo Zhou](https://sites.google.com/view/drzhou)."
+content = "✈️ Attended **ICML 2025** in Vancouver to present *Federated In-Context Learning: Iterative Refinement for Improved Answer Quality* — a privacy-preserving Fed-ICL framework with theoretical equivalence to established FL algorithms. With Zhiyong Wang, Chengkai Huang, Rui Wang, Tong Yu, Lina Yao, John C.S. Lui, and [Prof. Dongruo Zhou](https://sites.google.com/view/drzhou)."
 
 [[news]]
 date = "2025-06"
-content = "🛫 Attended **L4DC 2025** in Ann Arbor, MI to present *Safe Decision Transformer with Learning-based Constraints* — our Constrained Q-learning Decision Transformer (CQDT) for safe offline RL. Joint work with [Prof. Dongruo Zhou](https://sites.google.com/view/drzhou); previously presented at the NeurIPS 2024 Safe Generative AI Workshop."
+content = "✈️ Attended **L4DC 2025** in Ann Arbor, MI to present *Safe Decision Transformer with Learning-based Constraints* — our Constrained Q-learning Decision Transformer (CQDT) for safe offline RL. Joint work with [Prof. Dongruo Zhou](https://sites.google.com/view/drzhou); previously presented at the NeurIPS 2024 Safe Generative AI Workshop."
 
 [[news]]
 date = "2025-04"
@@ -52,7 +52,7 @@ content = "🎓 Advanced to **Ph.D. Candidacy** in Computer Engineering at India
 
 [[news]]
 date = "2025-03"
-content = "📚 Our work *Towards Agentic Recommender Systems in the Era of Multimodal LLMs* has been accepted to **ACM TIST** — a formal LLM-ARS framework spanning user profiling, memory, planning, and action selection, identifying seven open challenges. Collaboration led by Chengkai Huang with the team at UNSW, Adobe Research, UCSD, and Indiana University."
+content = "🎉 Our work *Towards Agentic Recommender Systems in the Era of Multimodal LLMs* has been accepted to **ACM TIST** — a formal LLM-ARS framework spanning user profiling, memory, planning, and action selection, identifying seven open challenges. Collaboration led by Chengkai Huang with the team at UNSW, Adobe Research, UCSD, and Indiana University."
 
 [[news]]
 date = "2024-12"
@@ -60,11 +60,11 @@ content = "🎓 Completed my **M.S. in Computer Engineering** at Indiana Univers
 
 [[news]]
 date = "2024-08"
-content = "🔬 Wrapped up my Ph.D. Research Internship at **Mitsubishi Electric Research Laboratories (MERL)** in Cambridge, MA, hosted by [Dr. Toshiaki Koike-Akino](https://scholar.google.com/citations?user=ZMo2ZM0AAAAJ&hl=en). Worked on quantum machine learning and generative models — resulted in *Quantum Diffusion Models for Few-Shot Learning*, accepted to **ICAD 2025** and the **AAAI 2024 Quantum Computing & AI Workshop**."
+content = "💼 Wrapped up my Ph.D. Research Internship at **Mitsubishi Electric Research Laboratories (MERL)** in Cambridge, MA, hosted by [Dr. Toshiaki Koike-Akino](https://scholar.google.com/citations?user=ZMo2ZM0AAAAJ&hl=en). Worked on quantum machine learning and generative models — resulted in *Quantum Diffusion Models for Few-Shot Learning*, accepted to **ICAD 2025** and the **AAAI 2024 Quantum Computing & AI Workshop**."
 
 [[news]]
 date = "2024-01"
-content = "⭐ *LLMCarbon: Modeling the End-to-End Carbon Footprint of Large Language Models* selected for **Oral Presentation** at **ICLR 2024** (Vienna) — projecting LLM carbon footprints across training, inference, experimentation, and storage. Joint work with Ahmad Faiz, Sotaro Kaneda, Rita Osi, Parteek Sharma, Fan Chen, and Lei Jiang."
+content = "🎉 *LLMCarbon: Modeling the End-to-End Carbon Footprint of Large Language Models* selected for **Oral Presentation** at **ICLR 2024** (Vienna) — projecting LLM carbon footprints across training, inference, experimentation, and storage. Joint work with Ahmad Faiz, Sotaro Kaneda, Rita Osi, Parteek Sharma, Fan Chen, and Lei Jiang."
 
 [[news]]
 date = "2023-08"
@@ -72,4 +72,4 @@ content = "🤝 Joined the **Machine Learning Lab** at Indiana University, advis
 
 [[news]]
 date = "2022-08"
-content = "🌟 Started my Ph.D. journey in **Computer Engineering** at Indiana University Bloomington, joining the Quantum Computing Lab under Prof. Fan Chen."
+content = "🎓 Started my Ph.D. journey in **Computer Engineering** at Indiana University Bloomington, joining the Quantum Computing Lab under Prof. Fan Chen."

@@ -14,6 +14,7 @@ import { HeartIcon as HeartSolidIcon } from '@heroicons/react/24/solid';
 import { Github, Linkedin, Pin } from 'lucide-react';
 import type { SiteConfig } from '@/lib/config';
 import { useMessages } from '@/lib/i18n/useMessages';
+import { trackEvent } from '@/lib/analytics';
 
 // Custom ORCID icon component
 const OrcidIcon = ({ className }: { className?: string }) => (
@@ -61,6 +62,7 @@ export default function Profile({ author, social, features, researchInterests }:
 
         if (newLikedState) {
             localStorage.setItem('jiale-website-user-liked', 'true');
+            trackEvent('like-homepage', 'Homepage Like');
             setShowThanks(true);
             setTimeout(() => setShowThanks(false), 2000);
         } else {

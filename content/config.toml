@@ -37,6 +37,9 @@ enable_likes = true
 # Display all subpages on a single page
 enable_one_page_mode = false
 
+[analytics]
+goatcounter = "https://ruhan-wang.goatcounter.com/count"
+
 [i18n]
 enabled = false
 locales = ["en"]

@@ -37,6 +37,9 @@ export interface SiteConfig {
     enable_likes: boolean;
     enable_one_page_mode?: boolean;
   };
+  analytics?: {
+    goatcounter?: string;
+  };
   navigation: Array<{
     title: string;
     type: 'section' | 'page' | 'link';

@@ -7,6 +7,7 @@ import { LocaleProvider } from '@/components/ui/LocaleProvider';
 import { getConfig } from '@/lib/config';
 import { getRuntimeI18nConfig } from '@/lib/i18n/config';
 import type { SiteConfig } from '@/lib/config';
+import GoatCounterAnalytics from '@/components/analytics/GoatCounterAnalytics';
 
 export async function generateMetadata(): Promise<Metadata> {
   const config = getConfig();
@@ -219,6 +220,7 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased">
+        <GoatCounterAnalytics endpoint={config.analytics?.goatcounter} />
         <ThemeProvider>
           <LocaleProvider config={runtimeI18n}>
             <Navigation

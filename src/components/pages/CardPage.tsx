@@ -2,6 +2,8 @@
 
 import { motion } from 'framer-motion';
 import ReactMarkdown from 'react-markdown';
+import Image from 'next/image';
+import { ArrowTopRightOnSquareIcon } from '@heroicons/react/24/outline';
 import { CardPageConfig } from '@/types/page';
 
 const markdownComponents = {
@@ -30,6 +32,8 @@ const markdownComponents = {
 };
 
 export default function CardPage({ config, embedded = false }: { config: CardPageConfig; embedded?: boolean }) {
+    const hasImages = config.items.some(item => item.image);
+
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -47,44 +51,80 @@ export default function CardPage({ config, embedded = false }: { config: CardPag
                 )}
             </div>
 
-            <div className={`grid ${embedded ? "gap-4" : "gap-6"}`}>
-                {config.items.map((item, index) => (
-                    <motion.div
-                        key={index}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.4, delay: 0.1 * index }}
-                        className={`bg-white dark:bg-neutral-900 ${embedded ? "p-4" : "p-6"} rounded-xl shadow-sm border border-neutral-200 dark:border-neutral-800 hover:shadow-lg transition-all duration-200 hover:scale-[1.01]`}
-                    >
-                        <div className="flex justify-between items-start mb-2">
-                            <h3 className={`${embedded ? "text-lg" : "text-xl"} font-semibold text-primary`}>{item.title}</h3>
-                            {item.date && (
-                                <span className="text-sm text-neutral-500 font-medium bg-neutral-100 dark:bg-neutral-800 px-2 py-1 rounded">
-                                    {item.date}
-                                </span>
+            <div className={`grid ${embedded ? "gap-4" : "gap-6"} ${hasImages ? "md:grid-cols-2" : ""}`}>
+                {config.items.map((item, index) => {
+                    const cardContent = (
+                        <>
+                            {item.image && (
+                                <div className="relative aspect-[4/3] mb-5 rounded-lg overflow-hidden bg-neutral-100 dark:bg-neutral-800 border border-neutral-100 dark:border-neutral-800">
+                                    <Image
+                                        src={item.image}
+                                        alt=""
+                                        fill
+                                        className="object-cover transition-transform duration-300 group-hover:scale-[1.02]"
+                                        sizes="(max-width: 768px) 100vw, 448px"
+                                    />
+                                </div>
                             )}
-                        </div>
-                        {item.subtitle && (
-                            <p className={`${embedded ? "text-sm" : "text-base"} text-accent font-medium mb-3`}>{item.subtitle}</p>
-                        )}
-                        {item.content && (
-                            <div className={`${embedded ? "text-sm" : "text-base"} text-neutral-600 dark:text-neutral-500 leading-relaxed`}>
-                                <ReactMarkdown components={markdownComponents}>
-                                    {item.content}
-                                </ReactMarkdown>
+                            <div className="flex justify-between items-start gap-3 mb-2">
+                                <h3 className={`${embedded ? "text-lg" : "text-xl"} font-semibold text-primary`}>{item.title}</h3>
+                                <div className="flex items-center gap-2 flex-shrink-0">
+                                    {item.date && (
+                                        <span className="text-sm text-neutral-500 font-medium bg-neutral-100 dark:bg-neutral-800 px-2 py-1 rounded">
+                                            {item.date}
+                                        </span>
+                                    )}
+                                    {item.link && (
+                                        <ArrowTopRightOnSquareIcon className="h-5 w-5 text-accent" aria-hidden="true" />
+                                    )}
+                                </div>
                             </div>
-                        )}
-                        {item.tags && (
-                            <div className="flex flex-wrap gap-2 mt-4">
-                                {item.tags.map(tag => (
-                                    <span key={tag} className="text-xs text-neutral-500 bg-neutral-50 dark:bg-neutral-800/50 px-2 py-1 rounded border border-neutral-100 dark:border-neutral-800">
-                                        {tag}
-                                    </span>
-                                ))}
-                            </div>
-                        )}
-                    </motion.div>
-                ))}
+                            {item.subtitle && (
+                                <p className={`${embedded ? "text-sm" : "text-base"} text-accent font-medium mb-3`}>{item.subtitle}</p>
+                            )}
+                            {item.content && (
+                                <div className={`${embedded ? "text-sm" : "text-base"} text-neutral-600 dark:text-neutral-500 leading-relaxed`}>
+                                    <ReactMarkdown components={markdownComponents}>
+                                        {item.content}
+                                    </ReactMarkdown>
+                                </div>
+                            )}
+                            {item.tags && (
+                                <div className="flex flex-wrap gap-2 mt-4">
+                                    {item.tags.map(tag => (
+                                        <span key={tag} className="text-xs text-neutral-500 bg-neutral-50 dark:bg-neutral-800/50 px-2 py-1 rounded border border-neutral-100 dark:border-neutral-800">
+                                            {tag}
+                                        </span>
+                                    ))}
+                                </div>
+                            )}
+                        </>
+                    );
+                    const cardClassName = `group block bg-white dark:bg-neutral-900 ${embedded ? "p-4" : "p-6"} rounded-xl shadow-sm border border-neutral-200 dark:border-neutral-800 hover:shadow-lg transition-all duration-200 hover:scale-[1.01]`;
+                    const motionProps = {
+                        initial: { opacity: 0, y: 20 },
+                        animate: { opacity: 1, y: 0 },
+                        transition: { duration: 0.4, delay: 0.1 * index },
+                    };
+
+                    return item.link ? (
+                        <motion.a
+                            key={item.title}
+                            {...motionProps}
+                            href={item.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            aria-label={`${item.title} — open blog`}
+                            className={cardClassName}
+                        >
+                            {cardContent}
+                        </motion.a>
+                    ) : (
+                        <motion.div key={item.title} {...motionProps} className={cardClassName}>
+                            {cardContent}
+                        </motion.div>
+                    );
+                })}
             </div>
         </motion.div>
     );

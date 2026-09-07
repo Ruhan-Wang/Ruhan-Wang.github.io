@@ -1,0 +1,39 @@
+type = "card"
+title = "Research Blogs"
+description = "Accessible project stories from my research internship at Tencent AI Lab. Click any card to explore the full blog."
+
+[[items]]
+title = "Harness Handbook"
+subtitle = "Making evolving agent harnesses readable, navigable, and editable"
+date = "Jul. 2026"
+content = "A behavior-centric map from high-level agent behavior to concrete implementation sites, designed for understanding, auditing, and modifying complex harnesses."
+tags = ["LLM Agents", "Agent Harnesses", "Code Intelligence"]
+link = "https://ruhan-wang.github.io/Harness-Handbook/"
+image = "/papers/harness_handbook.png"
+
+[[items]]
+title = "Long-Horizon Terminal-Bench"
+subtitle = "Where agents run out of steam"
+date = "Jul. 2026"
+content = "An interactive report on 46 long-horizon terminal tasks, dense process rewards, and what 18 frontier models reveal about sustained agent execution."
+tags = ["LLM Agents", "Benchmark", "Evaluation"]
+link = "https://zli12321.github.io/LHTB/"
+image = "/papers/long_horizon_terminal_bench.png"
+
+[[items]]
+title = "Stale but Stable"
+subtitle = "Staleness-adaptive trust regions for asynchronous reinforcement learning"
+date = "Jul. 2026"
+content = "A field guide to policy staleness in asynchronous LLM reinforcement learning and the SAT method for stabilizing high-mismatch updates."
+tags = ["LLM Post-Training", "Reinforcement Learning", "Systems"]
+link = "https://jyyang26.github.io/stable_async_analysis/"
+image = "/papers/stale_but_stable.png"
+
+[[items]]
+title = "Recursive Synthesis"
+subtitle = "Synthesizing verified long-horizon terminal tasks at low cost"
+date = "Aug. 2026"
+content = "An interactive look at recursively generating 37,484 verified terminal-agent tasks and using them for supervised fine-tuning and reinforcement learning."
+tags = ["Agentic RL", "Task Synthesis", "Training Data"]
+link = "https://zhongzhi660.github.io/recursive-verified-synthesis-site/"
+image = "/papers/recursive_synthesis.png"

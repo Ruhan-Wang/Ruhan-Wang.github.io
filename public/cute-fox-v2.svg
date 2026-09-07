@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <path d="M8.5 26 11 7.5c.2-1.5 2-2.2 3.1-1.2L27 18M55.5 26 53 7.5c-.2-1.5-2-2.2-3.1-1.2L37 18" fill="#f47b35"/>
+  <path d="m13.8 12.5 1.6 10 7.2-5.7M50.2 12.5l-1.6 10-7.2-5.7" fill="#ffc4b5"/>
+  <path d="M32 11.5c15 0 25 8.5 25 23.2C57 49 46.5 58.5 32 58.5S7 49 7 34.7C7 20 17 11.5 32 11.5Z" fill="#ff8538"/>
+  <path d="m25.5 12.2 6.5 4 6.5-4-1.4 7.2-5.1-2.5-5.1 2.5Z" fill="#fff2df"/>
+  <path d="M10.5 35.5c7.7-.2 14.3 3.7 21.5 15 7.2-11.3 13.8-15.2 21.5-15-1.8 14.2-9.8 23-21.5 23s-19.7-8.8-21.5-23Z" fill="#fff4df"/>
+  <ellipse cx="22.5" cy="32.5" rx="5" ry="6.2" fill="#47291f"/>
+  <ellipse cx="41.5" cy="32.5" rx="5" ry="6.2" fill="#47291f"/>
+  <circle cx="20.8" cy="30.2" r="1.7" fill="#fff"/>
+  <circle cx="39.8" cy="30.2" r="1.7" fill="#fff"/>
+  <circle cx="24.2" cy="35.3" r="1" fill="#fff"/>
+  <circle cx="43.2" cy="35.3" r="1" fill="#fff"/>
+  <ellipse cx="15.8" cy="41.8" rx="3.8" ry="2" fill="#ffaaa0" opacity=".85"/>
+  <ellipse cx="48.2" cy="41.8" rx="3.8" ry="2" fill="#ffaaa0" opacity=".85"/>
+  <path d="M27.5 42.5c0-2 2-3.3 4.5-3.3s4.5 1.3 4.5 3.3c0 1.8-2.1 3.7-4.5 5.2-2.4-1.5-4.5-3.4-4.5-5.2Z" fill="#47291f"/>
+  <path d="M32 47.2c-1 3-4 3.8-6 1.6M32 47.2c1 3 4 3.8 6 1.6" fill="none" stroke="#47291f" stroke-width="1.8" stroke-linecap="round"/>
+</svg>

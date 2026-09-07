@@ -1,4 +1,20 @@
 [[news]]
+date = "2026-08"
+content = "🧩 Released *[Recursive Synthesis for Long-Horizon Terminal Tasks](https://arxiv.org/abs/2608.05466)*, advancing self-improving terminal agents through recursive task synthesis."
+
+[[news]]
+date = "2026-07"
+content = "🛠️ Released *[Harness Handbook](https://arxiv.org/abs/2607.13285)*, a behavior-centric representation that makes evolving agent harnesses readable, navigable, and editable."
+
+[[news]]
+date = "2026-07"
+content = "🧪 Released *[Long-Horizon-Terminal-Bench](https://arxiv.org/abs/2607.08964)*, featuring 46 tasks across nine categories and dense reward-based grading for long-horizon terminal agents."
+
+[[news]]
+date = "2026-07"
+content = "🎉 *[FERA: Uncertainty-Aware Federated Reasoning for Large Language Models](https://arxiv.org/abs/2605.10082)* will appear at **COLM 2026**."
+
+[[news]]
 date = "2026-05"
 content = "🏅 Recognized as a **Gold Reviewer** for **ICML 2026**, placing among the top reviewers for this year's conference (with complimentary registration)."
 

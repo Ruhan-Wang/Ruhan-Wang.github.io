@@ -267,28 +267,13 @@ body {
   }
 }
 
-@keyframes footer-fox-float {
-  0%, 100% {
-    transform: translateY(0) rotate(0);
-  }
-  50% {
-    transform: translateY(-2px) rotate(1deg);
-  }
-}
-
 .fox-like {
   transform-origin: center bottom;
   animation: fox-like-wiggle 520ms ease-in-out 3;
 }
 
-.footer-fox {
-  transform-origin: center bottom;
-  animation: footer-fox-float 4s ease-in-out infinite;
-}
-
 @media (prefers-reduced-motion: reduce) {
-  .fox-like,
-  .footer-fox {
+  .fox-like {
     animation: none;
     transition: none;
   }

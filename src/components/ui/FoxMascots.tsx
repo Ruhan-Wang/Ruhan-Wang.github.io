@@ -16,16 +16,3 @@ export function FoxLike({ className = '' }: FoxProps) {
     />
   );
 }
-
-export function FooterFox({ className = '' }: FoxProps) {
-  return (
-    <Image
-      src="/fox-mascot.png"
-      alt=""
-      width={326}
-      height={512}
-      className={`footer-fox object-contain ${className}`}
-      aria-hidden="true"
-    />
-  );
-}

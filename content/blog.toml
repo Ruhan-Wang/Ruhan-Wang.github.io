@@ -8,7 +8,7 @@ subtitle = "Harness self-evolution for long-horizon terminal agents"
 date = "Oct. 2026"
 content = "Improve terminal-agent reliability with fixed model weights by comparing execution traces, adapting harness mechanisms, and validating each change through repeated evaluation."
 tags = ["LLM Agents", "Agent Harnesses", "Reliability"]
-link = "/agent-research/index.html"
+link = "/agent-research/riseharness.html"
 image = "/agent-research/figures/riseharness_workflow.png"
 
 [[items]]

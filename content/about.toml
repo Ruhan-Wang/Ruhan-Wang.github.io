@@ -3,9 +3,9 @@ title = "About"
 
 [profile]
 research_interests = [
-  "Agent Reinforcement Learning",
-  "Reinforcement Learning for Post-training, Reasoning",
-  "Self-Improving LLMs"
+  "Long-Horizon LLM Agents & Agent Harnesses",
+  "Agentic Reinforcement Learning & RLVR",
+  "Self-Evolving Agents & Scalable Post-Training"
 ]
 
 [[sections]]

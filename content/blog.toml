@@ -1,6 +1,6 @@
 type = "card"
 title = "Research Blogs"
-description = "Accessible project stories from my research internship at Tencent AI Lab. Click any card to explore the full blog."
+description = "Accessible project stories from my research at Tencent AI Lab. Click any card to explore the full blog."
 
 [[items]]
 title = "Harness Handbook"
@@ -37,3 +37,19 @@ content = "An interactive look at recursively generating 37,484 verified termina
 tags = ["Agentic RL", "Task Synthesis", "Training Data"]
 link = "https://zhongzhi660.github.io/recursive-verified-synthesis-site/"
 image = "/papers/recursive_synthesis.png"
+
+[[items]]
+title = "T1"
+subtitle = "Terminal agent reinforcement learning for long-horizon tasks"
+date = "Sep. 2026"
+content = "The official project page for a 122B mixture-of-experts terminal agent trained with dense verification rewards, TITO token alignment, and rollout routing replay for extended real-shell tasks."
+tags = ["Terminal Agents", "Reinforcement Learning", "Long-Horizon Tasks"]
+link = "https://jyyang26.github.io/t1/"
+
+[[items]]
+title = "Terminal-RSI"
+subtitle = "Recursive self-improving terminal agents"
+date = "Oct. 2026"
+content = "The official project page for recursive self-improvement through verified trajectory rewriting and critic-inheriting policy refinement, with turn-boundary credit assignment and success-prioritized rewards."
+tags = ["Terminal Agents", "Recursive Self-Improvement", "Policy Optimization"]
+link = "https://jyyang26.github.io/terminal-rsi/"

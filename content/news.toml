@@ -1,4 +1,28 @@
 [[news]]
+date = "2026-10-22"
+content = "📄 Released *[Terminal-RSI: Recursive Self-Improving Terminal Agents via Recursive Self-Rewrite and Policy-Refine](https://arxiv.org/abs/2610.22192)*, our work on recursive trajectory rewriting and critic-inheriting policy refinement for long-horizon terminal agents."
+
+[[news]]
+date = "2026-10-20"
+content = "📄 Released *[Harness Self-Evolution for Long-Horizon Terminal Agents](https://arxiv.org/abs/2610.27435)*, introducing **RiseHarness**, an evidence-driven framework that iteratively improves model-specific agent harnesses through paired success–failure analysis, runtime traces, external design search, and repeated evaluation."
+
+[[news]]
+date = "2026-10-19"
+content = "📄 Released *[More Memory, Worse Agents: Error Reproduction and Anti-Persistence in LLM Agents](https://arxiv.org/abs/2610.27406)*, identifying error reproduction in persistent agent memory and proposing **Anti-Persistence** to retain execution experience while synthesizing task-specific guidance on demand."
+
+[[news]]
+date = "2026-10-03"
+content = "📄 Released *[Scaling Trajectories for Complex Tasks through Recursive Self-Rewrite](https://arxiv.org/abs/2610.02826)*, which converts successful trajectories from specialized harnesses into verified demonstrations for a general harness."
+
+[[news]]
+date = "2026-10-03"
+content = "📄 Released *[Self-Supervised Scaling of Terminal Environments for Scientific Domains](https://arxiv.org/abs/2610.02710)*, introducing software-in-the-loop reconstruction for scalable scientific-agent training environments."
+
+[[news]]
+date = "2026-09-11"
+content = "📄 Released *[T1: Terminal Agent Reinforcement Learning for Long-Horizon Tasks](https://arxiv.org/abs/2609.11042)*, a 122B mixture-of-experts terminal agent post-trained with reinforcement learning for extended real-shell tasks."
+
+[[news]]
 date = "2026-08-05"
 content = "📄 Released *[Recursive Synthesis for Long-Horizon Terminal Tasks](https://arxiv.org/abs/2608.05466)*, our Tencent AI Lab work on recursively constructing verified long-horizon terminal-agent tasks at scale."
 
@@ -24,7 +48,7 @@ content = "🏅 Recognized as a **Gold Reviewer** for **ICML 2026**, placing amo
 
 [[news]]
 date = "2026-05"
-content = "💼 Started my Ph.D. Research Internship at **Tencent AI Lab (Hunyuan Frontier Lab)** in Bellevue, WA. Working on **Agentic Reinforcement Learning** for large language model agents."
+content = "💼 Joined **Tencent AI Lab (Hunyuan Frontier Lab)** in Bellevue, WA as a full-time researcher, working on **agentic reinforcement learning and self-evolving agents**."
 
 [[news]]
 date = "2026-05"

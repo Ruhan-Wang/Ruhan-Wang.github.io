@@ -1,26 +1,26 @@
 [site]
 title = "Ruhan Wang"
-description = "Ruhan Wang (王汝涵) — Ph.D. candidate in Computer Engineering at Indiana University, advised by Prof. Dongruo Zhou. Research on agentic reinforcement learning, federated reasoning, and self-improving large language models."
+description = "Ruhan Wang (王汝涵) — researcher at Tencent AI Lab's Hunyuan Frontier Lab and Computer Engineering Ph.D. candidate at Indiana University. Research on long-horizon LLM agents, self-evolving agent harnesses, reinforcement learning, and scalable post-training."
 url = "https://ruhan-wang.github.io"
 favicon = "/fox-icon-simple-final.png"
-last_updated = "September 7, 2026"
+last_updated = "October 25, 2026"
 
 [author]
 name = "Ruhan Wang / 王汝涵"
 highlight_authors = ["Ruhan Wang", "王汝涵"]
-title = "PhD Candidate"
-institution = "Indiana University"
+title = "Researcher · Ph.D. Candidate"
+institution = "Tencent AI Lab · Indiana University"
 avatar = "/ruhan-wang.png"
 
 [social]
 # Contact information (leave blank or delete to hide)
 
 email = "ruhwang@iu.edu"
-location = "Bloomington, United States"
-location_url = "https://maps.google.com"
+location = "Bellevue, Washington"
+location_url = "https://maps.google.com/?q=Bellevue%2C+WA"
 location_details = [
-  "Room 3061J, Luddy School of Informatics, Computing, and Engineering,",
-  "700 N Woodlawn Ave, Bloomington, IN 47408"
+  "Tencent AI Lab · Hunyuan Frontier Lab",
+  "Bellevue, WA"
 ]
 google_scholar = "https://scholar.google.com/citations?user=vHgJIPoAAAAJ&hl=en"
 github = "https://github.com/Ruhan-Wang"
@@ -28,7 +28,7 @@ linkedin = "https://www.linkedin.com/in/ruhan-wang-075922255/"
 
 [announcement]
 enabled = true
-text = "🎯 I'm on the 2026 Job Market — actively seeking research positions in both industry and academia. 🤝 I'm also always excited to explore new research collaborations and exchange ideas with fellow researchers. 📩 Please feel free to reach out via [ruhwang@iu.edu](mailto:ruhwang@iu.edu?subject=Reaching%20out%20from%20your%20website) or [LinkedIn](https://www.linkedin.com/in/ruhan-wang-075922255/?skipRedirect=true) — I'd love to chat!"
+text = "🤝 I'm always excited to explore research collaborations and exchange ideas on LLM agents, agentic reinforcement learning, and scalable post-training. 📩 Please feel free to reach out via [ruhwang@iu.edu](mailto:ruhwang@iu.edu?subject=Reaching%20out%20from%20your%20website) or [LinkedIn](https://www.linkedin.com/in/ruhan-wang-075922255/) — I'd love to chat!"
 
 [features]
 # Show a like button on the about page

@@ -12,14 +12,14 @@ tags = ["Conference", "Reviewer"]
 [[items]]
 title = "Conference Reviewer — ICML"
 subtitle = "International Conference on Machine Learning"
-date = "2025 – 2027"
-content = "Reviewer for ICML 2025–2027. Recognized as a **Gold Reviewer** for ICML 2026, placing among the top reviewers for the conference."
+date = "2025 – 2026"
+content = "Reviewer for ICML 2025–2026. Recognized as a **Gold Reviewer** for ICML 2026, placing among the top reviewers for the conference."
 tags = ["Conference", "Reviewer"]
 
 [[items]]
 title = "Conference Reviewer — NeurIPS"
 subtitle = "Annual Conference on Neural Information Processing Systems"
-date = "2025 – 2027"
+date = "2025 – 2026"
 content = "Reviewed submissions on reinforcement learning, large language models, and federated learning."
 tags = ["Conference", "Reviewer"]
 
@@ -33,8 +33,8 @@ tags = ["Conference", "Reviewer"]
 [[items]]
 title = "Journal Reviewer — Measurement Science and Technology"
 subtitle = "IOP Publishing"
-date = "2024 – 2026"
-content = "Reviewed manuscripts on measurement methodology and instrumentation."
+date = "Ongoing"
+content = "Reviewer for manuscripts on measurement methodology and instrumentation."
 tags = ["Journal", "Reviewer"]
 
 [[items]]

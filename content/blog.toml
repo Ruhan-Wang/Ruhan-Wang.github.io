@@ -63,6 +63,7 @@ date = "Sep. 2026"
 content = "The official project page for a 122B mixture-of-experts terminal agent trained with dense verification rewards, TITO token alignment, and rollout routing replay for extended real-shell tasks."
 tags = ["Terminal Agents", "Reinforcement Learning", "Long-Horizon Tasks"]
 link = "https://jyyang26.github.io/t1/"
+image = "/papers/t1.png"
 
 [[items]]
 title = "Terminal-RSI"
@@ -71,3 +72,4 @@ date = "Oct. 2026"
 content = "The official project page for recursive self-improvement through verified trajectory rewriting and critic-inheriting policy refinement, with turn-boundary credit assignment and success-prioritized rewards."
 tags = ["Terminal Agents", "Recursive Self-Improvement", "Policy Optimization"]
 link = "https://jyyang26.github.io/terminal-rsi/"
+image = "/papers/terminal_rsi.png"

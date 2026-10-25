@@ -56,7 +56,7 @@ Cambridge, MA
 
 ### Agentic AI & LLM Post-Training
 
-1. **Ruhan Wang**, Kishan Panaganti, and Dongruo Zhou. “[More Memory, Worse Agents: Error Reproduction and Anti-Persistence in LLM Agents](https://arxiv.org/abs/2610.27406).” *Under review at ICLR 2027*.
+1. **Ruhan Wang**, Kishan Panaganti, and Dongruo Zhou. “[More Memory, Worse Agents: Error Reproduction and Anti-Persistence in LLM Agents](https://arxiv.org/abs/2610.27406).” *arXiv:2610.27406*, 2026.
 2. **Ruhan Wang**, Yucheng Shi, Zongxia Li, Zhongzhi Li, Yue Yu, Junyao Yang, Kishan Panaganti, Haitao Mi, Dongruo Zhou, and Leowei Liang. “[Harness Handbook: Making Evolving Agent Harnesses Readable, Navigable, and Editable](https://arxiv.org/abs/2607.13285).” *arXiv:2607.13285*, 2026.
 3. **Ruhan Wang**, Yucheng Shi, Zongxia Li, Zhongzhi Li, Yue Yu, Junyao Yang, Kishan Panaganti, Haitao Mi, Dongruo Zhou, and Leowei Liang. “[Harness Self-Evolution for Long-Horizon Terminal Agents](https://arxiv.org/abs/2610.27435).” *Under review at ICLR 2027*.
 4. Junyao Yang, Zongxia Li, Yucheng Shi, Zhongzhi Li, **Ruhan Wang**, Ruiwen Zhou, Haitao Mi, Shuicheng Yan, and Leowei Liang. “[Terminal-RSI: Recursive Self-Improving Terminal Agents via Recursive Self-Rewrite and Policy-Refine](https://arxiv.org/abs/2610.22192).” *arXiv:2610.22192*, 2026.

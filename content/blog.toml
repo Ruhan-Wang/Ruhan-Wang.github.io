@@ -3,12 +3,30 @@ title = "Research Blogs"
 description = "Accessible project stories from my research at Tencent AI Lab. Click any card to explore the full blog."
 
 [[items]]
+title = "RiseHarness"
+subtitle = "Harness self-evolution for long-horizon terminal agents"
+date = "Oct. 2026"
+content = "Improve terminal-agent reliability with fixed model weights by comparing execution traces, adapting harness mechanisms, and validating each change through repeated evaluation."
+tags = ["LLM Agents", "Agent Harnesses", "Reliability"]
+link = "/agent-research/index.html"
+image = "/agent-research/figures/riseharness_workflow.png"
+
+[[items]]
+title = "More Memory, Worse Agents"
+subtitle = "Error reproduction and Anti-Persistence"
+date = "May 2026"
+content = "Retain task trajectories and outcomes, generate guidance for the current task, and discard it after use. Explore how Anti-Persistence improves success while reducing LLM calls."
+tags = ["LLM Agents", "Agent Memory", "Anti-Persistence"]
+link = "/agent-research/memory.html"
+image = "/papers/anti.png"
+
+[[items]]
 title = "Harness Handbook"
 subtitle = "Making evolving agent harnesses readable, navigable, and editable"
 date = "Jul. 2026"
 content = "A behavior-centric map from high-level agent behavior to concrete implementation sites, designed for understanding, auditing, and modifying complex harnesses."
 tags = ["LLM Agents", "Agent Harnesses", "Code Intelligence"]
-link = "https://ruhan-wang.github.io/Harness-Handbook/"
+link = "/agent-research/handbook.html"
 image = "/papers/harness_handbook.png"
 
 [[items]]

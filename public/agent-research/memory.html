@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>More Memory, Worse Agents: Error Reproduction and Anti-Persistence</title>
+<meta name="description" content="Anti-Persistence retains task trajectories and outcomes, generates guidance as needed, and discards it after each task. Explore error reproduction in agent memory, the method, and evaluation results.">
+<meta property="og:title" content="More Memory, Worse Agents: Error Reproduction and Anti-Persistence">
+<meta property="og:description" content="Anti-Persistence retains task trajectories and outcomes, generates guidance as needed, and discards it after each task. Explore error reproduction in agent memory, the method, and evaluation results.">
+<meta property="og:type" content="article">
+<link rel="icon" type="image/svg+xml" href="figures/anti-persistence-icon.svg?v=2">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>
+  (function () {
+    var root = document.documentElement;
+    root.classList.add('js');
+    var language = 'en', theme;
+    try {
+      language = localStorage.getItem('research-blog-language') || localStorage.getItem('riseharness-language') || language;
+      theme = localStorage.getItem('research-blog-theme') || localStorage.getItem('riseharness-theme');
+    } catch (e) {}
+    var requested = new URLSearchParams(window.location.search).get('lang');
+    if (requested === 'en' || requested === 'zh') language = requested;
+    root.lang = language === 'zh' ? 'zh-CN' : 'en';
+    var requestedTheme = new URLSearchParams(window.location.search).get('theme');
+    if (requestedTheme === 'light' || requestedTheme === 'dark') theme = requestedTheme;
+    if (theme === 'light' || theme === 'dark') root.dataset.theme = theme;
+  })();
+</script>
+<style>
+  :root {
+    --brand: #0052D9;
+    --brand-ink: #003FA6;
+    --brand-soft: #E8F0FF;
+    --coral: #E0574A;
+    --coral-soft: #FDEDEB;
+    --ink: #1C2B33;
+    --ink-2: #4A5A66;
+    --ink-3: #7A8894;
+    --line: #E3E8EE;
+    --bg: #FFFFFF;
+    --bg-2: #F6F8FB;
+    --bg-3: #EEF2F7;
+    --green: #26776D;
+    --green-soft: #E6F3F1;
+    --amber: #96651D;
+    --amber-soft: #FBF3E5;
+    --purple: #76549B;
+    --purple-soft: #F1EBF7;
+    --blue-op: #3566A6;
+    --blue-op-soft: #E9F0FA;
+    --shadow: 0 1px 2px rgba(28,43,51,.06), 0 8px 24px rgba(28,43,51,.06);
+    --radius: 14px;
+    --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+    --sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+    --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --brand: #6B9DFF;
+      --brand-ink: #9DBDFF;
+      --brand-soft: #16233D;
+      --coral: #F18479;
+      --coral-soft: #3A2320;
+      --ink: #E7ECF2;
+      --ink-2: #B4BFCA;
+      --ink-3: #8795A3;
+      --line: #2A3540;
+      --bg: #0F151B;
+      --bg-2: #161E26;
+      --bg-3: #1C2630;
+      --green: #6CC8B9;
+      --green-soft: #15302C;
+      --amber: #E0B264;
+      --amber-soft: #332A17;
+      --purple: #B59BD6;
+      --purple-soft: #2A2236;
+      --blue-op: #8BB0E8;
+      --blue-op-soft: #182439;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+    }
+  }
+  :root[data-theme="dark"] {
+    --brand: #6B9DFF; --brand-ink: #9DBDFF; --brand-soft: #16233D;
+    --coral: #F18479; --coral-soft: #3A2320;
+    --ink: #E7ECF2; --ink-2: #B4BFCA; --ink-3: #8795A3; --line: #2A3540;
+    --bg: #0F151B; --bg-2: #161E26; --bg-3: #1C2630;
+    --green: #6CC8B9; --green-soft: #15302C; --amber: #E0B264; --amber-soft: #332A17;
+    --purple: #B59BD6; --purple-soft: #2A2236; --blue-op: #8BB0E8; --blue-op-soft: #182439;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: var(--sans); font-size: 17px; line-height: 1.65;
+    -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+  }
+  a { color: var(--brand); text-decoration: none; }
+  a:hover { text-decoration: underline; text-underline-offset: 3px; }
+  img { max-width: 100%; height: auto; display: block; }
+  figure svg { max-width: 100%; height: auto; display: block; }
+  mjx-container { overflow-x: auto; overflow-y: hidden; }
+  code, pre { font-family: var(--mono); }
+  code { font-size: .88em; background: var(--bg-3); padding: .1em .4em; border-radius: 5px; }
+  pre { background: var(--bg-2); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; overflow-x: auto; font-size: 13.5px; line-height: 1.55; }
+  pre code { background: none; padding: 0; font-size: inherit; }
+
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 16px; }
+  .wrap-wide { max-width: 1100px; margin: 0 auto; padding: 0 16px; }
+
+  /* Nav */
+  nav.top {
+    position: sticky; top: 0; z-index: 20;
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
+    backdrop-filter: saturate(160%) blur(10px); -webkit-backdrop-filter: saturate(160%) blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  nav.top .wrap-wide { display: flex; align-items: center; gap: 18px; height: 54px; }
+  nav.top .brand { font-weight: 700; letter-spacing: -.01em; color: var(--ink); display: flex; align-items: center; gap: 10px; }
+  nav.top .links { margin-left: auto; display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+  nav.top .links::-webkit-scrollbar { display: none; }
+  nav.top .links a { color: var(--ink-2); font-size: 14px; font-weight: 500; padding: 6px 10px; border-radius: 8px; white-space: nowrap; }
+  nav.top .links a:hover { background: var(--bg-3); text-decoration: none; color: var(--ink); }
+  nav.top button.theme {
+    border: 1px solid var(--line); background: var(--bg-2); color: var(--ink-2);
+    width: 34px; height: 34px; border-radius: 9px; cursor: pointer; display: grid; place-items: center; flex: none;
+  }
+  nav.top button.theme:hover { color: var(--ink); }
+
+  /* Hero */
+  header.hero { padding: 64px 0 36px; border-bottom: 1px solid var(--line);
+    background: radial-gradient(1200px 400px at 50% -80px, var(--brand-soft), transparent 70%); }
+  .eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--brand); margin-bottom: 16px; }
+  .eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--brand); }
+  h1.title { font-family: var(--serif); font-weight: 600; font-size: clamp(30px, 5vw, 46px); line-height: 1.15; letter-spacing: -.015em; margin: 0 0 18px; }
+  h1.title .m { color: var(--brand); }
+  .subtitle { font-size: 19px; color: var(--ink-2); max-width: 720px; margin: 0 0 26px; }
+  .authors { font-size: 15.5px; line-height: 1.8; color: var(--ink); margin: 0 0 6px; }
+  .authors sup { font-size: 10px; color: var(--ink-3); margin-left: 1px; }
+  .affils { font-size: 13.5px; color: var(--ink-3); line-height: 1.7; margin: 0 0 22px; }
+  .affils sup { font-size: 10px; }
+  .btns { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 10px; font-weight: 600; font-size: 14.5px;
+    border: 1px solid var(--line); background: var(--bg); color: var(--ink); box-shadow: 0 1px 2px rgba(28,43,51,.05); transition: transform .12s ease, box-shadow .12s ease; }
+  .btn:hover { text-decoration: none; transform: translateY(-1px); box-shadow: var(--shadow); }
+  .btn.primary { background: var(--brand); border-color: var(--brand); color: #fff; }
+  .btn svg { width: 16px; height: 16px; }
+  .meta { font-size: 13.5px; color: var(--ink-3); }
+
+  /* Sections */
+  section { padding: 44px 0 8px; }
+  h2 { font-family: var(--serif); font-weight: 600; font-size: clamp(26px, 3.6vw, 32px); letter-spacing: -.01em; line-height: 1.2; margin: 0 0 14px; scroll-margin-top: 72px; }
+  h2 .num { font-family: var(--sans); font-size: 13px; font-weight: 700; color: var(--brand); letter-spacing: .08em; display: block; margin-bottom: 8px; }
+  h3 { font-size: 19px; font-weight: 700; margin: 30px 0 8px; letter-spacing: -.005em; scroll-margin-top: 72px; }
+  p { margin: 0 0 16px; }
+  .lead { font-size: 19px; color: var(--ink-2); }
+  ul, ol { padding-left: 22px; margin: 0 0 16px; }
+  li { margin-bottom: 6px; }
+  strong { font-weight: 650; }
+
+  .callout { background: var(--brand-soft); border-left: 4px solid var(--brand); border-radius: 0 12px 12px 0; padding: 16px 20px; margin: 20px 0 24px; }
+  .callout.coral { background: var(--coral-soft); border-color: var(--coral); }
+  .callout.green { background: var(--green-soft); border-color: var(--green); }
+  .callout p:last-child { margin-bottom: 0; }
+  .callout .label { font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--brand); margin-bottom: 6px; }
+  .callout.coral .label { color: var(--coral); }
+  .callout.green .label { color: var(--green); }
+
+  /* Stat tiles */
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin: 26px 0 8px; }
+  .stat { background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; }
+  .stat .v { font-size: 30px; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; color: var(--ink); font-variant-numeric: tabular-nums; }
+  .stat .v .up { color: var(--coral); font-size: 15px; font-weight: 700; margin-left: 4px; vertical-align: 6px; }
+  .stat .k { font-size: 13.5px; color: var(--ink-2); margin-top: 6px; }
+  .stat .k b { color: var(--ink); font-weight: 650; }
+
+  /* Figures */
+  figure { margin: 22px 0 28px; }
+  figure.card { background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; }
+  figure.card img { background: #fff; border-radius: 8px; width: 100%; }
+  figcaption { font-size: 14px; color: var(--ink-2); line-height: 1.55; margin-top: 12px; padding: 0 4px; }
+  figcaption b { color: var(--ink); }
+  .fig-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 720px) { .fig-row { grid-template-columns: 1fr; } }
+
+  /* Stage cards */
+  .stages { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; margin: 22px 0 26px; }
+  @media (max-width: 560px) { .stages { grid-template-columns: 1fr; } }
+  .stage { border: 1px solid var(--line); border-radius: var(--radius); padding: 18px 18px 14px; background: var(--bg); position: relative; box-shadow: var(--shadow); }
+  .stage .n { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; font-weight: 800; font-size: 14px; color: #fff; margin-bottom: 10px; }
+  .stage h4 { margin: 0 0 6px; font-size: 16.5px; font-weight: 700; }
+  .stage p { font-size: 14.5px; color: var(--ink-2); margin: 0; }
+  .stage.s1 { border-top: 4px solid #D9407F; } .stage.s1 .n { background: #D9407F; }
+  .stage.s2 { border-top: 4px solid #3F8F3B; } .stage.s2 .n { background: #3F8F3B; }
+  .stage.s3 { border-top: 4px solid #E08A1E; } .stage.s3 .n { background: #E08A1E; }
+  .stage.s4 { border-top: 4px solid #2F6CC4; } .stage.s4 .n { background: #2F6CC4; }
+
+  /* Operation table */
+  .ops { width: 100%; border-collapse: collapse; margin: 14px 0 22px; font-size: 15px; }
+  .ops td { padding: 11px 10px; border-top: 1px solid var(--line); vertical-align: top; }
+  .ops tr:last-child td { border-bottom: 1px solid var(--line); }
+  .op { display: inline-block; font-family: var(--mono); font-weight: 600; font-size: 13px; padding: 3px 9px; border-radius: 6px; white-space: nowrap; }
+  .op.compare { color: var(--blue-op); background: var(--blue-op-soft); }
+  .op.wish { color: var(--amber); background: var(--amber-soft); }
+  .op.revise { color: var(--green); background: var(--green-soft); }
+  .op.group { color: var(--purple); background: var(--purple-soft); }
+
+  /* Results table */
+  .table-wrap { overflow-x: auto; margin: 18px 0 10px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg); }
+  table.results { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 700px; font-variant-numeric: tabular-nums; }
+  table.results th, table.results td { padding: 9px 10px; text-align: center; border-bottom: 1px solid var(--line); }
+  table.results th { font-weight: 600; color: var(--ink-2); background: var(--bg-2); font-size: 13px; }
+  table.results th.grp { color: var(--ink); font-size: 13.5px; border-bottom: none; padding-bottom: 4px; }
+  table.results th.grp span { display: inline-block; border-bottom: 2px solid var(--line); padding: 0 24px 4px; }
+  table.results td:first-child, table.results th:first-child { text-align: left; padding-left: 14px; }
+  table.results td.model { text-align: left; font-weight: 700; background: var(--bg-2); color: var(--ink); padding-top: 10px; }
+  table.results tr.ours td { background: var(--brand-soft); font-weight: 600; }
+  table.results td .d { color: var(--coral); font-size: 10.5px; font-weight: 700; vertical-align: 4px; margin-left: 2px; }
+  table.results td.best { font-weight: 700; }
+  .tnote { font-size: 13.5px; color: var(--ink-3); margin: 8px 2px 0; }
+
+  /* Mechanism list */
+  .mechs { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 18px 0 26px; }
+  @media (max-width: 720px) { .mechs { grid-template-columns: 1fr; } }
+  .mech { border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; background: var(--bg-2); }
+  .mech h4 { margin: 0 0 10px; font-size: 15.5px; display: flex; align-items: center; gap: 8px; }
+  .mech h4 .tag { font-size: 11px; padding: 2px 8px; border-radius: 999px; font-weight: 700; letter-spacing: .04em; }
+  .mech.gpt h4 .tag { background: #FBE7DB; color: #B5461C; }
+  .mech.ds h4 .tag { background: var(--blue-op-soft); color: var(--blue-op); }
+  .mech ul { margin: 0; padding-left: 18px; font-size: 14.5px; color: var(--ink-2); }
+  .mech li b { color: var(--ink); }
+  .mech li code { font-size: 12.5px; }
+
+  /* Misc */
+  .eq { overflow-x: auto; padding: 4px 0; }
+  .eq-narrow { display: none; }
+  @media (max-width: 640px) { .eq-wide { display: none; } .eq-narrow { display: block; } }
+  .pill { display: inline-block; font-size: 12px; font-weight: 600; padding: 2px 9px; border-radius: 999px; background: var(--bg-3); color: var(--ink-2); margin-right: 6px; }
+  hr.sep { border: none; border-top: 1px solid var(--line); margin: 40px 0 0; }
+  footer { padding: 36px 0 60px; color: var(--ink-3); font-size: 14px; border-top: 1px solid var(--line); margin-top: 48px; }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between; }
+  .copy { position: relative; }
+  .copy button { position: absolute; top: 10px; right: 10px; border: 1px solid var(--line); background: var(--bg); color: var(--ink-2); font: 600 12px var(--sans); padding: 5px 10px; border-radius: 7px; cursor: pointer; }
+  .copy button:hover { color: var(--ink); }
+  .toc { background: var(--bg-2); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 20px; margin: 26px 0 0; font-size: 14.5px; }
+  .toc b { display: block; margin-bottom: 8px; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); }
+  .toc ol { margin: 0; padding-left: 20px; columns: 2; column-gap: 28px; }
+  @media (max-width: 640px) { .toc ol { columns: 1; } body { font-size: 16px; } }
+
+  /* Both translations live in the HTML; language switching preserves the
+     equations, figure elements, and section anchors. */
+  html:not([lang="zh-CN"]) .i18n[lang="zh-CN"],
+  html[lang="zh-CN"] .i18n[lang="en"] { display: none; }
+  html[lang="zh-CN"] body { line-height: 1.85; }
+  html[lang="zh-CN"] h1.title, html[lang="zh-CN"] h2 { font-family: var(--sans); line-height: 1.4; }
+  html[lang="zh-CN"] .subtitle { line-height: 1.75; }
+  .subtitle .m { color: var(--brand); font-weight: 600; }
+  section, header.hero { scroll-margin-top: 72px; }
+  nav.top .brand { flex-shrink: 0; }
+  nav.top .links { min-width: 0; }
+  .nav-controls { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+  .language-switch { display: none; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: 9px; background: var(--bg-2); }
+  .js .language-switch { display: flex; }
+  .language-switch button { border: 0; border-radius: 6px; background: transparent; color: var(--ink-2); font: 600 13px var(--sans); padding: 5px 8px; cursor: pointer; white-space: nowrap; }
+  .language-switch button[aria-pressed="true"] { background: var(--brand); color: #fff; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
+  .stat .v .up { font-size: 12px; vertical-align: 5px; white-space: nowrap; }
+  .mech h4 { flex-wrap: wrap; }
+  .mech code { overflow-wrap: anywhere; }
+  .copy pre { padding-top: 48px; }
+  .copy-status { display: block; min-height: 1.65em; font-size: 13px; color: var(--ink-2); }
+  @media (max-width: 980px) {
+    nav.top .wrap-wide { height: auto; flex-wrap: wrap; gap: 8px; padding-top: 8px; padding-bottom: 8px; }
+    nav.top .links { order: 3; flex: 0 0 100%; margin-left: 0; }
+    .nav-controls { margin-left: auto; }
+    section, header.hero, h2, h3 { scroll-margin-top: 116px; }
+  }
+  @media (max-width: 480px) {
+    header.hero { padding-top: 38px; }
+    nav.top .brand { font-size: 15px; gap: 6px; }
+    .nav-controls { gap: 6px; }
+    .language-switch button { padding: 5px 6px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .btn { transition: none; }
+  }
+
+  .memory-flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; list-style: none; padding: 0; margin: 24px 0; counter-reset: flow; }
+  .memory-flow li { counter-increment: flow; padding: 18px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-2); font-size: 14px; }
+  .memory-flow li::before { content: "0" counter(flow); display: block; margin-bottom: 10px; font-size: 12px; font-weight: 700; color: var(--brand); }
+  .memory-flow b { display: block; margin-bottom: 6px; }
+  .memory-flow .temporary { background: var(--coral-soft); border-color: var(--coral); }
+  .memory-chart { padding: 22px; border: 1px solid var(--line); border-radius: var(--radius); background: var(--bg-2); }
+  .memory-bar { margin-bottom: 18px; }
+  .memory-bar:last-of-type { margin-bottom: 0; }
+  .memory-bar-label { display: flex; gap: 12px; justify-content: space-between; margin-bottom: 6px; font-size: 14px; }
+  .memory-bar-track { height: 15px; border-radius: 4px; background: var(--bg-3); overflow: hidden; }
+  .memory-bar-fill { display: block; height: 100%; background: var(--ink-3); border-radius: 4px; }
+  .memory-bar.ours .memory-bar-fill { background: var(--brand); }
+  .memory-bar.ours .memory-bar-label { color: var(--brand); font-weight: 700; }
+  .memory-results { width: 100%; min-width: 560px; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+  .memory-results th, .memory-results td { padding: 12px 16px; border-bottom: 1px solid var(--line); text-align: left; }
+  .memory-results thead { background: var(--bg-2); }
+  .memory-results .ours { background: var(--brand-soft); font-weight: 600; }
+  .memory-results tr:last-child td { border-bottom: 0; }
+  @media (max-width: 720px) { .memory-flow { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 420px) { .memory-flow { grid-template-columns: 1fr; } }
+</style>
+<link rel="stylesheet" href="papers.css">
+<link rel="stylesheet" href="memory.css">
+<script defer src="memory.js"></script>
+<script defer src="papers.js"></script>
+</head>
+<body data-paper="memory">
+<nav class="paper-nav" aria-label="Research blogs"><div class="paper-nav__inner">
+<a class="paper-nav__link" href="memory.html" data-paper-link="memory.html" aria-current="page"><span class="paper-nav__number">01</span><span><span class="paper-nav__title">Memory</span><span class="paper-nav__description"><span class="paper-i18n" lang="en">Retain experience, generate guidance on demand</span><span class="paper-i18n" lang="zh-CN">保留经验，按需生成 guidance</span></span></span></a>
+<a class="paper-nav__link" href="handbook.html" data-paper-link="handbook.html"><span class="paper-nav__number">02</span><span><span class="paper-nav__title">Harness Handbook</span><span class="paper-nav__description"><span class="paper-i18n" lang="en">From system behavior to code</span><span class="paper-i18n" lang="zh-CN">从系统行为定位到代码</span></span></span></a>
+<a class="paper-nav__link" href="index.html" data-paper-link="index.html"><span class="paper-nav__number">03</span><span><span class="paper-nav__title">RiseHarness</span><span class="paper-nav__description"><span class="paper-i18n" lang="en">Evolve the harness, improve reliability</span><span class="paper-i18n" lang="zh-CN">演进 harness，提升执行可靠性</span></span></span></a>
+</div></nav><nav class="top" aria-label="Main navigation" id="mainNav"><div class="wrap-wide">
+<a class="brand" href="#top"><svg class="paper-brand-mark" color="#0052D9" style="color: var(--brand, #0052D9)" aria-hidden="true" focusable="false" width="22" height="22" viewBox="0 0 32 32" fill="none"><rect x="3" y="8" width="18" height="21" rx="3" fill="currentColor" opacity=".16"/><g stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M18 4H10a3 3 0 0 0-3 3v16a3 3 0 0 0 3 3h12a3 3 0 0 0 3-3v-7M12 14h5m-5 6h8"/><path d="m24 2 1.6 4.4L30 8l-4.4 1.6L24 14l-1.6-4.4L18 8l4.4-1.6Z" fill="currentColor" fill-opacity=".16"/></g></svg><span>Anti-Persistence</span></a><div class="links">
+<a href="#tldr"><span class="i18n" lang="en">Overview</span><span class="i18n" lang="zh-CN">概览</span></a>
+<a href="#problem"><span class="i18n" lang="en">Problem</span><span class="i18n" lang="zh-CN">问题</span></a>
+<a href="#method"><span class="i18n" lang="en">Method</span><span class="i18n" lang="zh-CN">方法</span></a>
+<a href="#results"><span class="i18n" lang="en">Results</span><span class="i18n" lang="zh-CN">结果</span></a>
+<a href="#dynamics"><span class="i18n" lang="en">Iterations</span><span class="i18n" lang="zh-CN">多轮迭代</span></a>
+<a href="#ablations"><span class="i18n" lang="en">Ablations</span><span class="i18n" lang="zh-CN">消融分析</span></a>
+<a href="#evidence"><span class="i18n" lang="en">Supporting evidence</span><span class="i18n" lang="zh-CN">辅助证据</span></a>
+<a href="#takeaways"><span class="i18n" lang="en">Takeaways</span><span class="i18n" lang="zh-CN">要点总结</span></a>
+<a href="#cite"><span class="i18n" lang="en">Cite</span><span class="i18n" lang="zh-CN">引用</span></a>
+</div><div class="nav-controls"><div class="language-switch" role="group" aria-label="Language / 语言">
+<button type="button" data-language="en" lang="en" aria-pressed="true">EN</button><button type="button" data-language="zh" lang="zh-CN" aria-pressed="false">中文</button></div>
+<button type="button" class="theme" id="themeBtn" title="Toggle theme" aria-label="Toggle color theme"><svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></button></div></div></nav>
+<header class="hero" id="top"><div class="wrap">
+<div class="eyebrow"><span class="dot"></span><span class="i18n" lang="en">Agent memory · May 2026</span><span class="i18n" lang="zh-CN">Agent memory · 2026 年 5 月</span></div>
+<h1 class="title"><span class="i18n" lang="en">More Memory, Worse Agents: Error Reproduction and Anti-Persistence</span><span class="i18n" lang="zh-CN">More Memory, Worse Agents：Error Reproduction 与 Anti-Persistence</span></h1>
+<p class="subtitle"><span class="i18n" lang="en"><strong class="m">Anti-Persistence</strong> retains trajectories (execution records) and outcomes from past tasks, then generates guidance (task-specific instructions) as needed for the current task. The guidance is used only for that task and discarded when it ends. The model’s weights remain fixed throughout.</span><span class="i18n" lang="zh-CN"><strong class="m">Anti-Persistence</strong> 保留历史任务的 trajectory（执行轨迹）与结果，并根据当前任务按需生成 guidance（任务指导）。Guidance 仅用于当前任务，结束后即丢弃；模型权重始终保持固定。</span></p>
+<div class="btns"><a class="btn primary" href="https://arxiv.org/abs/2610.27406">arXiv · 2610.27406</a><a class="btn" href="2610.27406v1.pdf"><span class="i18n" lang="en">Read the PDF</span><span class="i18n" lang="zh-CN">阅读 PDF</span></a><a class="btn" href="#cite"><span class="i18n" lang="en">Cite this work</span><span class="i18n" lang="zh-CN">引用本文</span></a></div>
+</div></header><main class="wrap">
+<section id="tldr">
+<h2><span class="num">TL;DR</span><span class="i18n" lang="en">Higher success with fewer LLM calls</span><span class="i18n" lang="zh-CN">更高成功率，更低调用成本</span></h2>
+<p class="lead"><span class="i18n" lang="en">Anti-Persistence helps agents use past experience more effectively <strong>without updating model weights</strong>: it retains trajectories and outcomes over the long term, generates guidance as needed for the current task, and discards that guidance after use. Across nine settings spanning three models and three benchmarks, it achieves <strong>higher average held-out success with fewer LLM calls</strong> than the three memory baselines.</span><span class="i18n" lang="zh-CN">Anti-Persistence 在<strong>不更新模型权重</strong>的前提下，让 agent 更有效地利用历史经验：长期保留 trajectory 与结果，针对当前任务按需生成 guidance，用后即丢弃。在三个模型、三个 benchmark 的九种配置中，相比三种 memory 对照方案，它以<strong>更少的 LLM 调用，取得更高的平均 held-out 成功率</strong>。</span></p>
+<div class="stats memory-summary-stats">
+<div class="stat">
+<div class="memory-stat-heading"><span class="i18n" lang="en">Higher success</span><span class="i18n" lang="zh-CN">更高成功率</span></div>
+<div class="v">59.9%</div>
+<div class="k"><span class="i18n" lang="en">Average held-out success</span><span class="i18n" lang="zh-CN">平均 held-out 成功率</span></div>
+<div class="memory-stat-comparison"><span class="i18n" lang="en"><b>+6.4%</b> over the strongest memory baseline<br>Trajectory memory: 53.5%</span><span class="i18n" lang="zh-CN">比最强 memory 对照<strong>高 6.4%</strong><br>Trajectory memory：53.5%</span></div>
+</div>
+<div class="stat">
+<div class="memory-stat-heading"><span class="i18n" lang="en">Leads across settings</span><span class="i18n" lang="zh-CN">多种配置领先</span></div>
+<div class="v">7 / 9</div>
+<div class="k"><span class="i18n" lang="en">Settings with the highest mean success</span><span class="i18n" lang="zh-CN">配置取得最高平均成功率</span></div>
+<div class="memory-stat-comparison"><span class="i18n" lang="en">Compared with <b>seven other methods</b><br>3 models × 3 benchmarks</span><span class="i18n" lang="zh-CN">与<strong>另外七种方法</strong>比较<br>3 个模型 × 3 个 benchmark</span></div>
+</div>
+<div class="stat">
+<div class="memory-stat-heading"><span class="i18n" lang="en">Fewer LLM calls</span><span class="i18n" lang="zh-CN">更少 LLM 调用</span></div>
+<div class="v">9.3</div>
+<div class="k"><span class="i18n" lang="en">Average LLM calls per held-out task</span><span class="i18n" lang="zh-CN">每个 held-out 任务的平均调用次数</span></div>
+<div class="memory-stat-comparison"><span class="i18n" lang="en">Below <b>all three memory baselines</b><br>9.5–10.2 calls per task</span><span class="i18n" lang="zh-CN">低于<strong>三种 memory 对照方案</strong><br>对照：每个任务 9.5–10.2 次</span></div>
+</div>
+</div>
+<p class="memory-stat-note"><span class="i18n" lang="en">Averages weight all nine settings equally. +6.4% is the absolute success-rate difference (59.9% − 53.5%). Calls include guidance synthesis and task execution. <a href="#results">See the full comparison →</a></span><span class="i18n" lang="zh-CN">均值按九种配置等权计算。+6.4% 为成功率绝对差值（59.9% − 53.5%）；调用数包含 guidance synthesis 与任务执行。<a href="#results">查看完整对比 →</a></span></p>
+<div class="callout"><div class="label"><span class="i18n" lang="en">Choose how to use experience for each task</span><span class="i18n" lang="zh-CN">按任务选择经验的使用方式</span></div>
+<p><span class="i18n" lang="en">For each task, the system uses past feedback to choose how to draw on experience: consult previous execution records directly, extract useful action steps from successful runs, build an overall plan from successful runs, or derive corrective advice from failed runs. It also considers the extra LLM calls needed to generate guidance. That guidance is discarded after the task, while execution records and outcomes remain available for future tasks.</span><span class="i18n" lang="zh-CN">系统根据当前任务与历史反馈，选择如何利用经验：直接参考过去的执行记录、从成功记录中提取操作步骤、从成功经验中归纳整体计划，或从失败记录中总结纠错建议。选择时还会考虑生成 guidance 所需的额外 LLM 调用。生成的 guidance 在任务结束后即丢弃，执行记录与结果则继续保留，供后续任务参考。</span></p>
+</div>
+<div class="toc memory-toc"><b><span class="i18n" lang="en">On this page</span><span class="i18n" lang="zh-CN">阅读导航</span></b><ol><li><a href="#problem"><span class="i18n" lang="en">How errors return</span><span class="i18n" lang="zh-CN">错误如何再次出现</span></a></li><li><a href="#method"><span class="i18n" lang="en">Method and workflow</span><span class="i18n" lang="zh-CN">方法与执行流程</span></a></li><li><a href="#results"><span class="i18n" lang="en">Full results across nine settings</span><span class="i18n" lang="zh-CN">九种配置的完整结果</span></a></li><li><a href="#dynamics"><span class="i18n" lang="en">What changes over ten rounds</span><span class="i18n" lang="zh-CN">十轮迭代中的变化</span></a></li><li><a href="#ablations"><span class="i18n" lang="en">Retention, mode choice, and retrieval</span><span class="i18n" lang="zh-CN">保留策略、模式选择与检索</span></a></li><li><a href="#evidence"><span class="i18n" lang="en">Supporting evidence and conclusions</span><span class="i18n" lang="zh-CN">辅助证据与结论范围</span></a></li><li><a href="#takeaways"><span class="i18n" lang="en">Key takeaways</span><span class="i18n" lang="zh-CN">要点总结</span></a></li></ol></div></section>
+<section id="problem">
+<h2><span class="num">01</span><span class="i18n" lang="en">Error reproduction: how mistakes enter memory again</span><span class="i18n" lang="zh-CN">Error Reproduction：错误如何再次进入 memory</span></h2>
+<p><span class="i18n" lang="en">Consider a hypothetical example: an agent finds a cup in a cabinet and records “check the cabinet first” as a required step for getting a cup. On the next task, the cup is already on the table, yet the agent checks the cabinet before picking it up. The task succeeds, and the unnecessary check becomes part of a successful execution record. If the system treats every step in that record as part of what made the task succeed, it may generate new guidance that again requires checking the cabinet first.</span><span class="i18n" lang="zh-CN">假设 agent 曾在橱柜里找到杯子，便把“先检查橱柜”记成了拿杯子的固定步骤。下一次任务中，杯子已经在桌上，它仍先检查橱柜，再去拿杯子。任务虽然完成了，多余的检查步骤也留在了这次成功的执行记录里。如果系统把这些步骤都当作成功经验，新生成的 guidance 就可能再次要求“先检查橱柜”，让同一个错误借助新记录继续保留下来。</span></p>
+<p><span class="i18n" lang="en">The paper distinguishes <strong>error propagation</strong> from <strong>error reproduction</strong>. Propagation occurs when an existing faulty record or rule is retrieved and reused. Reproduction occurs when a faulty rule shapes later execution and those trajectories are distilled into new faulty rules. Deleting the original rule alone cannot remove its influence from the trajectories already stored or from rules derived from them.</span><span class="i18n" lang="zh-CN">论文将这一问题区分为 <strong>error propagation</strong> 与 <strong>error reproduction</strong>。前者是已有错误记录或规则被检索并复用；后者是错误规则影响后续执行，受影响的 trajectory 又被归纳为新的错误规则。仅删除原始规则，无法同时清除它对已有 trajectory 的影响，也无法删除由这些记录衍生的规则。</span></p>
+<figure class="memory-pathways">
+<div class="memory-pathway persistent"><h4><span class="i18n" lang="en">Persistent abstractions</span><span class="i18n" lang="zh-CN">持久化 abstraction</span></h4><ol><li><b><span class="i18n" lang="en">Infer a rule</span><span class="i18n" lang="zh-CN">归纳规则</span></b><span><span class="i18n" lang="en">May overgeneralize from limited experience</span><span class="i18n" lang="zh-CN">可能把局部经验过度泛化</span></span></li><li><b><span class="i18n" lang="en">Reuse it later</span><span class="i18n" lang="zh-CN">跨任务复用</span></b><span><span class="i18n" lang="en">The rule shapes new actions</span><span class="i18n" lang="zh-CN">规则影响新的行动</span></span></li><li><b><span class="i18n" lang="en">Keep the trajectory</span><span class="i18n" lang="zh-CN">保留执行记录</span></b><span><span class="i18n" lang="en">Its influence enters execution records</span><span class="i18n" lang="zh-CN">影响被写入执行经验</span></span></li><li><b><span class="i18n" lang="en">Synthesize again</span><span class="i18n" lang="zh-CN">再次归纳</span></b><span><span class="i18n" lang="en">The same error may reappear</span><span class="i18n" lang="zh-CN">同类错误可能再次出现</span></span></li></ol></div><div class="memory-pathway ephemeral"><h4><span class="i18n" lang="en">Anti-Persistence</span><span class="i18n" lang="zh-CN">Anti-Persistence</span></h4><ol><li><b><span class="i18n" lang="en">Keep execution records</span><span class="i18n" lang="zh-CN">保留执行经验</span></b><span><span class="i18n" lang="en">Store trajectories and outcomes</span><span class="i18n" lang="zh-CN">存储 trajectory 与结果</span></span></li><li><b><span class="i18n" lang="en">Retrieve for this task</span><span class="i18n" lang="zh-CN">针对当前任务检索</span></b><span><span class="i18n" lang="en">Choose a mode and relevant records</span><span class="i18n" lang="zh-CN">选择模式与相关记录</span></span></li><li><b><span class="i18n" lang="en">Use fresh guidance</span><span class="i18n" lang="zh-CN">使用临时 guidance</span></b><span><span class="i18n" lang="en">Synthesize only when selected</span><span class="i18n" lang="zh-CN">按所选模式进行 synthesis</span></span></li><li><b><span class="i18n" lang="en">Discard the guidance</span><span class="i18n" lang="zh-CN">用后丢弃 guidance</span></b><span><span class="i18n" lang="en">Save the new execution and outcome</span><span class="i18n" lang="zh-CN">保存本次执行及其结果</span></span></li></ol></div><figcaption><span class="i18n" lang="en">Two ways experience can inform future tasks. The upper path illustrates possible error reproduction; it is not an inevitable outcome. The lower path removes direct storage of generated guidance, while trajectories can still carry its influence. Adapted from paper §§1 and 3.2.</span><span class="i18n" lang="zh-CN">两种将经验用于后续任务的方式。上方展示可能形成的 error reproduction 路径，并非必然结果；下方移除了 guidance 的直接存储，但 trajectory 仍可能保留其影响。依据论文第 1 节与第 3.2 节整理。</span></figcaption></figure>
+<p><span class="i18n" lang="en">This distinction matters when maintaining memory. Removing a questionable rule prevents its direct retrieval, but does not automatically revise executions produced under that rule. A maintenance policy can still help by examining those records or filtering later abstractions. The design question is therefore both <strong>what to retain</strong> and <strong>how long inferred guidance should remain reusable</strong>.</span><span class="i18n" lang="zh-CN">这一区分也解释了 memory 维护的难点。删除可疑规则，可以阻止它被直接检索，却不会自动修正此前受其影响的执行记录。维护策略仍可通过检查这些记录或筛选后续 abstraction 发挥作用。因此，memory 设计既要回答<strong>保留什么</strong>，也要回答<strong>生成的 guidance 应当在多长时间内继续被复用</strong>。</span></p>
+</section>
+<section id="method">
+<h2><span class="num">02</span><span class="i18n" lang="en">Separate persistent experience from temporary guidance</span><span class="i18n" lang="zh-CN">区分长期经验与临时 guidance</span></h2>
+<p><span class="i18n" lang="en">To limit the direct reuse of rules, Anti-Persistence manages long-term records separately from guidance for the current task. The <strong>experience store</strong> retains task trajectories and outcomes. A separate <strong>outcome log</strong> records mode choices and their results, including a cost penalty for extra synthesis calls. Generated guidance is written to neither store and is discarded when the task ends.</span><span class="i18n" lang="zh-CN">为限制规则的直接复用，Anti-Persistence 将长期保存的记录与面向当前任务的 guidance 分开管理。<strong>Experience store</strong> 保存任务 trajectory 和结果；独立的 <strong>outcome log</strong> 记录模式选择及其效果，并计入额外 synthesis 调用的成本惩罚。生成的 guidance 不写入这两类存储，任务结束后即被丢弃。</span></p>
+<ol class="memory-flow">
+<li><span class="i18n" lang="en"><b>Retrieve feedback</b>Find outcomes from similar earlier tasks.</span><span class="i18n" lang="zh-CN"><b>检索历史反馈</b>获取相似任务的执行结果。</span></li>
+<li><span class="i18n" lang="en"><b>Choose a mode</b>Decide how to use past experience.</span><span class="i18n" lang="zh-CN"><b>选择使用模式</b>决定如何利用历史经验。</span></li>
+<li><span class="i18n" lang="en"><b>Execute the task</b>Use retrieved records or newly generated guidance.</span><span class="i18n" lang="zh-CN"><b>执行当前任务</b>使用检索到的记录或新生成的 guidance。</span></li>
+<li><span class="i18n" lang="en"><b>Update the execution records</b>Save trajectories and outcomes; discard generated guidance.</span><span class="i18n" lang="zh-CN"><b>更新经验记录</b>保存 trajectory 与结果，丢弃生成的 guidance。</span></li>
+</ol>
+<h3><span class="i18n" lang="en">Four modes for using memory</span><span class="i18n" lang="zh-CN">四种 memory 使用模式</span></h3>
+<div class="stages">
+<div class="stage s1"><span class="n">1</span>
+<h4><span class="i18n" lang="en">None · use trajectories directly</span><span class="i18n" lang="zh-CN">None · 直接使用 trajectory</span></h4>
+<p><span class="i18n" lang="en">Retrieve past trajectories without an extra synthesis call. “None” means no synthesis, not no memory.</span><span class="i18n" lang="zh-CN">直接检索历史 trajectory，不进行额外的 guidance synthesis。None 表示不执行 synthesis，而非不使用 memory。</span></p>
+</div>
+<div class="stage s2"><span class="n">2</span>
+<h4><span class="i18n" lang="en">Imitation · reuse an action pattern</span><span class="i18n" lang="zh-CN">Imitation · 复用行动模式</span></h4>
+<p><span class="i18n" lang="en">Extract useful action patterns and the conditions under which they worked from successful runs.</span><span class="i18n" lang="zh-CN">从成功的 trajectory 中提取可复用的行动模式及其适用条件。</span></p>
+</div>
+<div class="stage s3"><span class="n">3</span>
+<h4><span class="i18n" lang="en">Strategic · generate a high-level plan</span><span class="i18n" lang="zh-CN">Strategic · 生成高层计划</span></h4>
+<p><span class="i18n" lang="en">Use successful runs to identify higher-level subgoals and a plan for the new task.</span><span class="i18n" lang="zh-CN">基于成功的 trajectory，确定当前任务的高层子目标与执行计划。</span></p>
+</div>
+<div class="stage s4"><span class="n">4</span>
+<h4><span class="i18n" lang="en">Corrective · generate corrective guidance</span><span class="i18n" lang="zh-CN">Corrective · 生成纠错 guidance</span></h4>
+<p><span class="i18n" lang="en">Analyze failed runs and, when available, compare them with a successful run to produce corrective guidance.</span><span class="i18n" lang="zh-CN">分析失败的 trajectory，并在有可用成功样本时进行对照，生成纠错 guidance。</span></p>
+</div>
+</div>
+<h3><span class="i18n" lang="en">Choose how to use memory, then retrieve the records</span><span class="i18n" lang="zh-CN">先选 memory 的使用方式，再取相关记录</span></h3>
+<p><span class="i18n" lang="en">The system first uses feedback from similar past tasks to choose how to use memory. It then retrieves relevant execution records, either to use directly or to generate guidance for the current task. Each new task outcome informs future choices, without updating the model’s weights.</span><span class="i18n" lang="zh-CN">系统先参考相似任务的历史反馈，选择 memory 的使用方式；再检索对应的执行记录，直接用于当前任务，或从中生成 guidance。新的任务结果会为后续选择提供依据，整个过程无需更新模型权重。</span></p>
+</section>
+<section id="results">
+<h2><span class="num">03</span><span class="i18n" lang="en">A full comparison across models, tasks, and memory designs</span><span class="i18n" lang="zh-CN">不同模型、任务与 memory 设计的完整对比</span></h2>
+<p><span class="i18n" lang="en">The study evaluates <strong>three fixed backbones × three benchmarks</strong>, comparing Anti-Persistence with four agent baselines and three other memory configurations. Each method receives the same iteration-task stream. Only these episodes update memory; after each of ten rounds, the entire held-out set is evaluated with memory and controller state frozen. Held-out logs never enter later updates.</span><span class="i18n" lang="zh-CN">实验覆盖<strong>三个固定 backbone × 三个 benchmark</strong>，将 Anti-Persistence 与四种 agent baseline、三种其他 memory 配置比较。各方法使用相同的迭代任务序列，只有这些 episode 可以更新 memory。每轮更新后，在冻结 memory 与 controller 状态的条件下评测完整 held-out 集，共进行十轮；held-out 日志不参与后续更新。</span></p>
+<div class="memory-benchmarks"><div><h4>ALFWorld</h4><p><span class="i18n" lang="en">Multi-step actions in household environments</span><span class="i18n" lang="zh-CN">家庭场景中的多步操作</span></p>
+<p class="memory-split"><span class="i18n" lang="en">180 iteration tasks · 134 held-out tasks</span><span class="i18n" lang="zh-CN">180 个迭代任务 · 134 个 held-out 任务</span></p></div><div><h4>WebShop</h4><p><span class="i18n" lang="en">Product search and selection under explicit constraints</span><span class="i18n" lang="zh-CN">满足明确约束的商品搜索与选择</span></p>
+<p class="memory-split"><span class="i18n" lang="en">200 iteration tasks · 100 held-out tasks</span><span class="i18n" lang="zh-CN">200 个迭代任务 · 100 个 held-out 任务</span></p></div><div><h4>ScienceWorld</h4><p><span class="i18n" lang="en">Interactive science tasks</span><span class="i18n" lang="zh-CN">交互式科学任务</span></p>
+<p class="memory-split"><span class="i18n" lang="en">150 iteration tasks · 60 held-out tasks</span><span class="i18n" lang="zh-CN">150 个迭代任务 · 60 个 held-out 任务</span></p></div></div><p class="tnote"><span class="i18n" lang="en">Each round samples 50 iteration tasks; the backbone weights remain fixed. Main results report mean ± standard deviation across three seeds. See <a href="2610.27406v1.pdf#page=24">Appendix D.1</a>.</span><span class="i18n" lang="zh-CN">每轮抽取 50 个迭代任务，backbone 权重始终固定。主实验报告三个随机种子的均值 ± 标准差。详见<a href="2610.27406v1.pdf#page=24">附录 D.1</a>。</span></p>
+<h3><span class="i18n" lang="en">From overall averages to nine individual settings</span><span class="i18n" lang="zh-CN">从总体均值展开到九种具体配置</span></h3>
+<figure class="memory-figure"><div class="memory-figure-scroll memory-figure-wide" tabindex="0" role="region" aria-label="Chart / 图表"><a href="figures/memory-results.svg" target="_blank" rel="noopener"><img src="figures/memory-results.svg" loading="lazy" alt="Heatmap of eight methods across nine settings. Anti-Persistence has the highest mean in seven settings; Reflexion leads Gemma ALFWorld and Joint memory leads Gemma ScienceWorld." data-alt-en="Heatmap of eight methods across nine settings. Anti-Persistence has the highest mean in seven settings; Reflexion leads Gemma ALFWorld and Joint memory leads Gemma ScienceWorld." data-alt-zh="八种方法在九种配置下的成功率。Anti-Persistence 在七种配置中均值最高；Gemma 的 ALFWorld 与 ScienceWorld 分别由 Reflexion 与 Joint memory 领先。" width="762" height="386"></a></div><figcaption><span class="i18n" lang="en"><b>Final held-out success across all eight methods.</b> Each cell shows mean success (%); white outlines mark the highest mean in each setting. ALF, Web, and Sci denote the three benchmarks. Redrawn from <a href="2610.27406v1.pdf#page=6">Table 1</a>.</span><span class="i18n" lang="zh-CN"><b>八种方法的最终 held-out 成功率。</b>每格展示平均成功率（%），白色边框标出各配置中的最高均值。ALF、Web、Sci 分别对应三个 benchmark。数据来自<a href="2610.27406v1.pdf#page=6">表 1</a>，已重绘。</span> <a class="memory-figure-open" href="figures/memory-results.svg" target="_blank" rel="noopener"><span class="i18n" lang="en">Open full-size ↗</span><span class="i18n" lang="zh-CN">查看大图 ↗</span></a><span class="memory-chart-hint"><span class="i18n" lang="en">Scroll the chart sideways, or open it full-size.</span><span class="i18n" lang="zh-CN">图表可左右滑动，也可点击查看大图。</span></span></figcaption></figure>
+<p><span class="i18n" lang="en">Anti-Persistence reaches the highest mean in <strong>seven of nine settings</strong>. It outperforms trajectory memory and abstraction memory in all nine, and joint memory in eight. The gains are not confined to one backbone: on ScienceWorld, success rises from 20.0% to 30.6% for Llama and from 43.8% to 52.6% for Qwen when moving from trajectory memory to Anti-Persistence.</span><span class="i18n" lang="zh-CN">Anti-Persistence 在<strong>九种配置中的七种</strong>取得最高平均成功率；相较 Trajectory memory 与 Abstraction memory，九种配置均有提升，相较 Joint memory 则在八种配置中更好。收益并不限于单个 backbone：在 ScienceWorld 上，从 Trajectory memory 切换到 Anti-Persistence 后，Llama 的成功率由 20.0% 升至 30.6%，Qwen 则由 43.8% 升至 52.6%。</span></p>
+
+<details class="memory-details"><summary><span class="i18n" lang="en">Inspect all means and standard deviations</span><span class="i18n" lang="zh-CN">展开查看完整均值与标准差</span></summary><h4>Llama-4-Scout</h4><div class="table-wrap"><table class="memory-results"><thead><tr><th scope="col"><span class="i18n" lang="en">Method</span><span class="i18n" lang="zh-CN">方法</span></th><th scope="col">ALFWorld</th><th scope="col">WebShop</th><th scope="col">ScienceWorld</th></tr></thead><tbody><tr><th scope="row">ReAct</th><td>29.3 ± 3.1</td><td>33.3 ± 1.2</td><td>9.4 ± 1.0</td></tr><tr><th scope="row">Reflexion</th><td>46.7 ± 6.1</td><td>45.3 ± 4.2</td><td>22.8 ± 1.0</td></tr><tr><th scope="row">ExpeL</th><td>7.2 ± 3.2</td><td>38.0 ± 5.3</td><td>5.0 ± 1.9</td></tr><tr><th scope="row">AutoRefine</th><td>36.3 ± 3.2</td><td>37.3 ± 2.3</td><td>15.3 ± 1.7</td></tr><tr><th scope="row">Trajectory memory</th><td>41.6 ± 1.7</td><td>45.3 ± 1.2</td><td>20.0 ± 1.7</td></tr><tr><th scope="row">Abstraction memory</th><td>42.7 ± 1.2</td><td>37.3 ± 1.2</td><td>18.9 ± 1.0</td></tr><tr><th scope="row">Joint memory</th><td>33.3 ± 2.3</td><td>35.3 ± 1.2</td><td>7.2 ± 1.9</td></tr><tr class="ours"><th scope="row">Anti-Persistence</th><td>54.7 ± 2.9</td><td>46.3 ± 1.8</td><td>30.6 ± 1.0</td></tr></tbody></table></div><h4>Qwen3-Coder-Next</h4><div class="table-wrap"><table class="memory-results"><thead><tr><th scope="col"><span class="i18n" lang="en">Method</span><span class="i18n" lang="zh-CN">方法</span></th><th scope="col">ALFWorld</th><th scope="col">WebShop</th><th scope="col">ScienceWorld</th></tr></thead><tbody><tr><th scope="row">ReAct</th><td>70.4 ± 1.8</td><td>36.0 ± 2.0</td><td>27.2 ± 2.6</td></tr><tr><th scope="row">Reflexion</th><td>87.3 ± 3.1</td><td>47.3 ± 1.2</td><td>33.9 ± 3.5</td></tr><tr><th scope="row">ExpeL</th><td>88.0 ± 2.0</td><td>47.3 ± 2.3</td><td>32.8 ± 4.8</td></tr><tr><th scope="row">AutoRefine</th><td>83.7 ± 6.7</td><td>40.7 ± 2.3</td><td>27.8 ± 1.0</td></tr><tr><th scope="row">Trajectory memory</th><td>84.4 ± 2.6</td><td>50.7 ± 1.2</td><td>43.8 ± 3.7</td></tr><tr><th scope="row">Abstraction memory</th><td>84.7 ± 2.4</td><td>38.3 ± 3.5</td><td>34.0 ± 1.0</td></tr><tr><th scope="row">Joint memory</th><td>81.9 ± 0.2</td><td>47.0 ± 1.7</td><td>36.3 ± 0.6</td></tr><tr class="ours"><th scope="row">Anti-Persistence</th><td>96.0 ± 1.4</td><td>54.0 ± 2.0</td><td>52.6 ± 1.5</td></tr></tbody></table></div><h4>Gemma-4-31B-it</h4><div class="table-wrap"><table class="memory-results"><thead><tr><th scope="col"><span class="i18n" lang="en">Method</span><span class="i18n" lang="zh-CN">方法</span></th><th scope="col">ALFWorld</th><th scope="col">WebShop</th><th scope="col">ScienceWorld</th></tr></thead><tbody><tr><th scope="row">ReAct</th><td>72.7 ± 1.2</td><td>43.3 ± 2.3</td><td>44.2 ± 1.2</td></tr><tr><th scope="row">Reflexion</th><td>98.0 ± 0.8</td><td>50.0 ± 2.0</td><td>44.5 ± 2.6</td></tr><tr><th scope="row">ExpeL</th><td>96.7 ± 2.3</td><td>38.6 ± 1.9</td><td>51.3 ± 1.2</td></tr><tr><th scope="row">AutoRefine</th><td>88.0 ± 4.0</td><td>48.0 ± 4.0</td><td>43.3 ± 0.0</td></tr><tr><th scope="row">Trajectory memory</th><td>96.0 ± 1.0</td><td>48.0 ± 0.2</td><td>51.7 ± 1.7</td></tr><tr><th scope="row">Abstraction memory</th><td>92.7 ± 2.3</td><td>45.3 ± 4.2</td><td>46.7 ± 1.7</td></tr><tr><th scope="row">Joint memory</th><td>95.3 ± 3.1</td><td>51.3 ± 1.2</td><td>56.3 ± 2.4</td></tr><tr class="ours"><th scope="row">Anti-Persistence</th><td>97.3 ± 1.2</td><td>53.3 ± 3.1</td><td>54.1 ± 6.3</td></tr></tbody></table></div><p class="tnote"><span class="i18n" lang="en">Success (%), mean ± SD over three seeds. Source: paper Table 1.</span><span class="i18n" lang="zh-CN">成功率（%），三个随机种子的均值 ± 标准差。来源：论文表 1。</span></p>
+</details><h3><span class="i18n" lang="en">Generating guidance need not increase total LLM calls</span><span class="i18n" lang="zh-CN">生成 guidance，不一定增加总调用次数</span></h3>
+<figure class="memory-figure"><div class="memory-figure-scroll memory-figure-wide" tabindex="0" role="region" aria-label="Chart / 图表"><a href="figures/memory-efficiency.svg" target="_blank" rel="noopener"><img src="figures/memory-efficiency.svg" loading="lazy" alt="Four memory designs: Anti-Persistence averages 59.9% success and 9.3 LLM calls, compared with trajectory memory at 53.5% and 9.5 calls." data-alt-en="Four memory designs: Anti-Persistence averages 59.9% success and 9.3 LLM calls, compared with trajectory memory at 53.5% and 9.5 calls." data-alt-zh="四种 memory 设计的平均表现：Anti-Persistence 为 59.9% 成功率、9.3 次 LLM 调用；Trajectory memory 为 53.5%、9.5 次。" width="750" height="247"></a></div><figcaption><span class="i18n" lang="en"><b>Average success and LLM-call cost.</b> Dots show equally weighted means across the nine settings. The displayed ranges are 45–65% for success and 9.0–10.5 calls. Calls include guidance synthesis and task execution.</span><span class="i18n" lang="zh-CN"><b>平均成功率与 LLM 调用成本。</b>圆点表示九种配置的等权均值。成功率坐标范围为 45–65%，调用次数范围为 9.0–10.5 次；调用次数包含 guidance synthesis 与任务执行。</span> <a class="memory-figure-open" href="figures/memory-efficiency.svg" target="_blank" rel="noopener"><span class="i18n" lang="en">Open full-size ↗</span><span class="i18n" lang="zh-CN">查看大图 ↗</span></a><span class="memory-chart-hint"><span class="i18n" lang="en">Scroll the chart sideways, or open it full-size.</span><span class="i18n" lang="zh-CN">图表可左右滑动，也可点击查看大图。</span></span></figcaption></figure>
+<p><span class="i18n" lang="en">On average, Anti-Persistence improves success by <strong>6.4%</strong> over Trajectory memory while reducing LLM calls from 9.5 to 9.3.</span><span class="i18n" lang="zh-CN">平均而言，Anti-Persistence 相比 Trajectory memory 的成功率提升 <strong>6.4%</strong>，调用次数则由 9.5 降至 9.3。</span></p>
+<p class="tnote"><span class="i18n" lang="en">Reported gains use % for absolute differences between success rates, rather than relative percentage growth.</span><span class="i18n" lang="zh-CN">文中增益以 % 表示成功率的绝对差值，而非相对增长率。</span></p>
+</section>
+<section id="dynamics">
+<h2><span class="num">04</span><span class="i18n" lang="en">How memory behaves over ten rounds</span><span class="i18n" lang="zh-CN">十轮更新中，memory 的作用如何变化？</span></h2>
+<p><span class="i18n" lang="en">The iteration curves below compare the four memory configurations while keeping the backbone fixed. Switch models to inspect the same three benchmarks under different backbones.</span><span class="i18n" lang="zh-CN">下方曲线在固定 backbone 的条件下比较四种 memory 配置；切换模型，可以查看相同三个 benchmark 在不同 backbone 上的变化。</span></p>
+<div class="memory-model-picker"><label for="memoryCurveModel"><span class="i18n" lang="en">Select a backbone</span><span class="i18n" lang="zh-CN">选择 backbone</span></label><select id="memoryCurveModel"><option value="llama">Llama-4-Scout</option><option value="qwen">Qwen3-Coder-Next</option><option value="gemma">Gemma-4-31B-it</option></select></div><div class="memory-curve-legend" aria-label="Legend / 图例"><span><i style="background:#2680fa"></i>Trajectory</span><span><i style="background:#ff344e"></i>Abstraction</span><span><i style="background:#00b6d6"></i>Joint</span><span><i style="background:#21af49"></i>Anti-Persistence</span></div><div class="memory-curve-panel" data-curve="llama"><h4>Llama-4-Scout</h4><figure class="memory-figure"><div class="memory-figure-scroll memory-figure-wide" tabindex="0" role="region" aria-label="Chart / 图表"><a href="figures/memory-rounds-llama.png" target="_blank" rel="noopener"><img src="figures/memory-rounds-llama.png" loading="lazy" alt="Llama-4-Scout held-out success over ten memory-update iterations on ALFWorld, WebShop and ScienceWorld." data-alt-en="Llama-4-Scout held-out success over ten memory-update iterations on ALFWorld, WebShop and ScienceWorld." data-alt-zh="Llama-4-Scout 在 ALFWorld、WebShop 和 ScienceWorld 上十轮 memory 更新后的 held-out 成功率。" width="1281" height="417"></a></div><figcaption><span class="i18n" lang="en"><b>Llama-4-Scout · success over iterations 1–10.</b> Cropped directly from paper <a href="2610.27406v1.pdf#page=7">Figure 2a</a>. Each panel retains its original y-axis range.</span><span class="i18n" lang="zh-CN"><b>Llama-4-Scout · 第 1–10 轮成功率。</b>直接摘取自论文<a href="2610.27406v1.pdf#page=7">图 2a</a>，各面板保留原图的纵轴范围。</span> <a class="memory-figure-open" href="figures/memory-rounds-llama.png" target="_blank" rel="noopener"><span class="i18n" lang="en">Open full-size ↗</span><span class="i18n" lang="zh-CN">查看大图 ↗</span></a><span class="memory-chart-hint"><span class="i18n" lang="en">Scroll the chart sideways, or open it full-size.</span><span class="i18n" lang="zh-CN">图表可左右滑动，也可点击查看大图。</span></span></figcaption></figure>
+</div><div class="memory-curve-panel" data-curve="qwen"><h4>Qwen3-Coder-Next</h4><figure class="memory-figure"><div class="memory-figure-scroll memory-figure-wide" tabindex="0" role="region" aria-label="Chart / 图表"><a href="figures/memory-rounds-qwen.png" target="_blank" rel="noopener"><img src="figures/memory-rounds-qwen.png" loading="lazy" alt="Qwen3-Coder-Next held-out success over ten memory-update iterations on ALFWorld, WebShop and ScienceWorld." data-alt-en="Qwen3-Coder-Next held-out success over ten memory-update iterations on ALFWorld, WebShop and ScienceWorld." data-alt-zh="Qwen3-Coder-Next 在 ALFWorld、WebShop 和 ScienceWorld 上十轮 memory 更新后的 held-out 成功率。" width="1248" height="417"></a></div><figcaption><span class="i18n" lang="en"><b>Qwen3-Coder-Next · success over iterations 1–10.</b> Cropped directly from paper <a href="2610.27406v1.pdf#page=7">Figure 2a</a>. Each panel retains its original y-axis range.</span><span class="i18n" lang="zh-CN"><b>Qwen3-Coder-Next · 第 1–10 轮成功率。</b>直接摘取自论文<a href="2610.27406v1.pdf#page=7">图 2a</a>，各面板保留原图的纵轴范围。</span> <a class="memory-figure-open" href="figures/memory-rounds-qwen.png" target="_blank" rel="noopener"><span class="i18n" lang="en">Open full-size ↗</span><span class="i18n" lang="zh-CN">查看大图 ↗</span></a><span class="memory-chart-hint"><span class="i18n" lang="en">Scroll the chart sideways, or open it full-size.</span><span class="i18n" lang="zh-CN">图表可左右滑动，也可点击查看大图。</span></span></figcaption></figure>
+</div><div class="memory-curve-panel" data-curve="gemma"><h4>Gemma-4-31B-it</h4><figure class="memory-figure"><div class="memory-figure-scroll memory-figure-wide" tabindex="0" role="region" aria-label="Chart / 图表"><a href="figures/memory-rounds-gemma.png" target="_blank" rel="noopener"><img src="figures/memory-rounds-gemma.png" loading="lazy" alt="Gemma-4-31B-it held-out success over ten memory-update iterations on ALFWorld, WebShop and ScienceWorld." data-alt-en="Gemma-4-31B-it held-out success over ten memory-update iterations on ALFWorld, WebShop and ScienceWorld." data-alt-zh="Gemma-4-31B-it 在 ALFWorld、WebShop 和 ScienceWorld 上十轮 memory 更新后的 held-out 成功率。" width="1167" height="438"></a></div><figcaption><span class="i18n" lang="en"><b>Gemma-4-31B-it · success over iterations 1–10.</b> Cropped directly from paper <a href="2610.27406v1.pdf#page=27">Figure 9a</a>. Each panel retains its original y-axis range.</span><span class="i18n" lang="zh-CN"><b>Gemma-4-31B-it · 第 1–10 轮成功率。</b>直接摘取自论文<a href="2610.27406v1.pdf#page=27">图 9a</a>，各面板保留原图的纵轴范围。</span> <a class="memory-figure-open" href="figures/memory-rounds-gemma.png" target="_blank" rel="noopener"><span class="i18n" lang="en">Open full-size ↗</span><span class="i18n" lang="zh-CN">查看大图 ↗</span></a><span class="memory-chart-hint"><span class="i18n" lang="en">Scroll the chart sideways, or open it full-size.</span><span class="i18n" lang="zh-CN">图表可左右滑动，也可点击查看大图。</span></span></figcaption></figure>
+</div><div class="memory-reading"><h4><span class="i18n" lang="en">What to look for</span><span class="i18n" lang="zh-CN">如何阅读这些曲线</span></h4><ul><li><span class="i18n" lang="en"><strong>Llama:</strong> joint memory loses ground late in the run, especially on ScienceWorld.</span><span class="i18n" lang="zh-CN"><strong>Llama：</strong>Joint memory 在后期出现回落，ScienceWorld 尤为明显。</span></li><li><span class="i18n" lang="en"><strong>Qwen:</strong> abstraction memory fluctuates substantially on WebShop. Anti-Persistence ends ahead across all three benchmarks, without leading at every intermediate round.</span><span class="i18n" lang="zh-CN"><strong>Qwen：</strong>Abstraction memory 在 WebShop 上波动较大。Anti-Persistence 在三个 benchmark 的最终均值均更高，但并非每轮都领先。</span></li><li><span class="i18n" lang="en"><strong>Gemma:</strong> joint memory finishes best on ScienceWorld, while Anti-Persistence leads the other two benchmarks among the four memory designs.</span><span class="i18n" lang="zh-CN"><strong>Gemma：</strong>Joint memory 在 ScienceWorld 上最终表现最好，Anti-Persistence 则在另外两个 benchmark 的四种 memory 设计中领先。</span></li></ul></div>
+</section>
+<section id="ablations">
+<h2><span class="num">05</span><span class="i18n" lang="en">Which design choices account for the gains?</span><span class="i18n" lang="zh-CN">哪些设计选择带来了收益？</span></h2>
+<p><span class="i18n" lang="en">The paper examines three choices separately: <strong>whether to save generated guidance, how to choose a mode for using experience, and how many records to retrieve.</strong> Each experiment changes one of these choices and measures task success.</span><span class="i18n" lang="zh-CN">论文将方法拆成三个选择分别考察：<strong>生成的 guidance 要不要保存、如何选择经验的使用模式，以及每次检索多少条记录。</strong>每组实验调整其中一个选择，再比较任务成功率。</span></p>
+<h3><span class="i18n" lang="en">1. Should guidance be discarded after use or saved?</span><span class="i18n" lang="zh-CN">1. Guidance 用完后，应该丢弃还是保存？</span></h3>
+<p><span class="i18n" lang="en">Both variants retain trajectories and task outcomes, and both can generate guidance for the current task. The comparison concerns what happens afterward: <strong>Discard removes that guidance after use; Persist saves it for retrieval in later tasks.</strong></span><span class="i18n" lang="zh-CN">两个版本都保留 trajectory 与任务结果，也都可以为当前任务生成 guidance。区别在任务结束后：<strong>Discard 丢弃这份 guidance；Persist 将它保存下来，供后续任务检索。</strong></span></p>
+<figure class="memory-figure"><div class="memory-figure-scroll memory-figure-wide" tabindex="0" role="region" aria-label="Chart / 图表"><a href="figures/memory-retention.svg" target="_blank" rel="noopener"><img src="figures/memory-retention.svg" loading="lazy" alt="Discarding guidance yields absolute success-rate gains of 28.0%, 12.3%, 3.3%, and 6.7% in the four retention comparisons." data-alt-en="Discarding guidance yields absolute success-rate gains of 28.0%, 12.3%, 3.3%, and 6.7% in the four retention comparisons." data-alt-zh="在四组保留策略对比中，丢弃 guidance 分别带来 28.0%、12.3%、3.3% 和 6.7% 的成功率绝对提升。" width="721" height="339"></a></div><figcaption><span class="i18n" lang="en"><b>Keep or discard generated guidance?</b> Blue dots show Discard; orange dots show Persist. Further right means higher success. Error bars show ±1 SD over three seeds; the right column is the absolute difference, Discard minus Persist. Source: <a href="2610.27406v1.pdf#page=10">Table 2</a>.</span><span class="i18n" lang="zh-CN"><b>生成的 guidance，用后丢弃还是保存？</b>蓝点为 Discard，橙点为 Persist；越靠右，成功率越高。误差棒为三个随机种子的 ±1 标准差，右侧为 Discard 减去 Persist 的绝对差值。数据来自<a href="2610.27406v1.pdf#page=10">表 2</a>。</span> <a class="memory-figure-open" href="figures/memory-retention.svg" target="_blank" rel="noopener"><span class="i18n" lang="en">Open full-size ↗</span><span class="i18n" lang="zh-CN">查看大图 ↗</span></a><span class="memory-chart-hint"><span class="i18n" lang="en">Scroll the chart sideways, or open it full-size.</span><span class="i18n" lang="zh-CN">图表可左右滑动，也可点击查看大图。</span></span></figcaption></figure>
+<p><span class="i18n" lang="en"><strong>Discard has higher mean success in all four settings.</strong> For example, Llama-4-Scout on ALFWorld reaches 54.7% with Discard, versus 26.7% with Persist. In these settings, keeping execution records while discarding generated guidance works better than retaining both.</span><span class="i18n" lang="zh-CN"><strong>四种配置中，Discard 的平均成功率均更高。</strong>例如，在 Llama-4-Scout 的 ALFWorld 实验中，Discard 为 54.7%，Persist 为 26.7%。这说明，在这些配置下，保留执行记录、用后丢弃 guidance，比把生成的规则也长期保存下来更有效。</span></p>
+<details class="memory-details"><summary><span class="i18n" lang="en">Inspect retention-ablation values</span><span class="i18n" lang="zh-CN">查看保留策略消融的完整数值</span></summary><div class="table-wrap"><table class="memory-results"><thead><tr>
+<th><span class="i18n" lang="en">Model / benchmark</span><span class="i18n" lang="zh-CN">模型 / benchmark</span></th>
+<th><span class="i18n" lang="en">Discard guidance</span><span class="i18n" lang="zh-CN">Discard guidance</span></th>
+<th><span class="i18n" lang="en">Persist guidance</span><span class="i18n" lang="zh-CN">Persist guidance</span></th>
+<th><span class="i18n" lang="en">Change (%)</span><span class="i18n" lang="zh-CN">变化（%）</span></th>
+</tr></thead><tbody>
+<tr><td>Llama-4-Scout · ALFWorld</td><td>54.7 ± 2.9</td><td>26.7 ± 6.1</td><td>+28.0</td></tr>
+<tr><td>Llama-4-Scout · WebShop</td><td>46.3 ± 1.8</td><td>34.0 ± 4.0</td><td>+12.3</td></tr>
+<tr><td>Qwen3-Coder-Next · ALFWorld</td><td>96.0 ± 1.4</td><td>92.7 ± 1.2</td><td>+3.3</td></tr>
+<tr><td>Qwen3-Coder-Next · WebShop</td><td>54.0 ± 2.0</td><td>47.3 ± 3.1</td><td>+6.7</td></tr>
+</tbody></table></div>
+<p class="tnote"><span class="i18n" lang="en">Source: paper Table 2. Success rates are percentages, reported as mean ± standard deviation over three seeds. Change is the absolute difference: Discard minus Persist.</span><span class="i18n" lang="zh-CN">来源：论文表 2。成功率以 % 标注，报告三个随机种子的均值 ± 标准差。变化为绝对差值：Discard 减去 Persist。</span></p></details>
+<h3><span class="i18n" lang="en">2. Should the agent use one fixed mode or choose per task?</span><span class="i18n" lang="zh-CN">2. 使用固定模式，还是根据任务动态选择？</span></h3>
+<p><span class="i18n" lang="en">This experiment compares three policies: always use one synthesis mode (Imitation, Strategic, or Corrective), choose randomly, or use the <strong>adaptive Bandit</strong> to choose based on the current task and past feedback. The bar chart compares their success rates; the heatmap shows which modes the adaptive selector actually uses.</span><span class="i18n" lang="zh-CN">这组实验比较三种方式：始终使用某一种模式（Imitation、Strategic 或 Corrective）、随机选择，以及由<strong>自适应 Bandit</strong> 根据当前任务和历史反馈选择。柱状图比较成功率；热图展示自适应 selector 实际使用了哪些模式。</span></p>
+<div class="memory-figure-pair">
+<figure class="memory-figure memory-figure-compact"><div class="memory-figure-scroll" tabindex="0" role="region" aria-label="Chart / 图表"><a href="figures/memory-mode-selection.png" target="_blank" rel="noopener"><img src="figures/memory-mode-selection.png" loading="lazy" alt="Mode-selection ablation on Qwen: the adaptive bandit leads both benchmarks; the best fixed mode differs." data-alt-en="Mode-selection ablation on Qwen: the adaptive bandit leads both benchmarks; the best fixed mode differs." data-alt-zh="Qwen 的模式选择消融：自适应 Bandit 在两个 benchmark 均领先，最佳固定模式随 benchmark 改变。" width="1182" height="540"></a></div><figcaption><span class="i18n" lang="en"><b>Which selection policy performs better?</b> Green bars show the adaptive Bandit; other bars show fixed-mode or random selection. Means ± SD over three seeds on Qwen3-Coder-Next; y-axes are truncated. Original plot: <a href="2610.27406v1.pdf#page=9">Figure 6</a>.</span><span class="i18n" lang="zh-CN"><b>哪种选择方式的成功率更高？</b>绿色柱为自适应 Bandit，其余为固定模式或随机选择。均使用 Qwen3-Coder-Next，报告三个随机种子的均值 ± 标准差，纵轴采用截断范围。摘自<a href="2610.27406v1.pdf#page=9">图 6</a>。</span> <a class="memory-figure-open" href="figures/memory-mode-selection.png" target="_blank" rel="noopener"><span class="i18n" lang="en">Open full-size ↗</span><span class="i18n" lang="zh-CN">查看大图 ↗</span></a></figcaption></figure>
+<figure class="memory-figure"><div class="memory-figure-scroll memory-figure-wide" tabindex="0" role="region" aria-label="Chart / 图表"><a href="figures/memory-mode-usage.svg" target="_blank" rel="noopener"><img src="figures/memory-mode-usage.svg" loading="lazy" alt="Mode frequencies across nine settings. On WebShop Qwen chooses Imitation 53% of the time, while Llama chooses Strategic 45%; None is used in every setting on average." data-alt-en="Mode frequencies across nine settings. On WebShop Qwen chooses Imitation 53% of the time, while Llama chooses Strategic 45%; None is used in every setting on average." data-alt-zh="九种配置的模式选择频率。WebShop 上 Qwen 的 Imitation 占比为 53%，Llama 的 Strategic 占比为 45%；所有配置的 None 平均占比均非零。" width="687" height="235"></a></div><figcaption><span class="i18n" lang="en"><b>Which modes does the selector use?</b> Rows are models; columns are modes. Darker cells mean more frequent selection, not higher success. Percentages average rounds 1–10; rounding may keep rows from summing to 100%. Redrawn from <a href="2610.27406v1.pdf#page=10">Figure 8</a>.</span><span class="i18n" lang="zh-CN"><b>Selector 实际选择了哪些模式？</b>每行是一个模型，每列是一种模式；颜色越深，选择越频繁，并不表示成功率越高。数值为第 1–10 轮的平均占比，四舍五入后行合计可能不等于 100%。依据<a href="2610.27406v1.pdf#page=10">图 8</a>重绘。</span> <a class="memory-figure-open" href="figures/memory-mode-usage.svg" target="_blank" rel="noopener"><span class="i18n" lang="en">Open full-size ↗</span><span class="i18n" lang="zh-CN">查看大图 ↗</span></a><span class="memory-chart-hint"><span class="i18n" lang="en">Scroll the chart sideways, or open it full-size.</span><span class="i18n" lang="zh-CN">图表可左右滑动，也可点击查看大图。</span></span></figcaption></figure>
+</div>
+<p><span class="i18n" lang="en"><strong>Adaptive selection has the highest mean success on both benchmarks.</strong> With Qwen3-Coder-Next, it reaches 96.0% on ALFWorld and 54.0% on WebShop. The best fixed mode changes across benchmarks: Strategic on ALFWorld, Imitation on WebShop. These comparisons support adapting mode choice to the task and feedback.</span><span class="i18n" lang="zh-CN"><strong>自适应选择在两个 benchmark 上的平均成功率均最高。</strong>在 Qwen3-Coder-Next 上，ALFWorld 为 96.0%，WebShop 为 54.0%。最佳固定模式则随 benchmark 改变：ALFWorld 是 Strategic，WebShop 是 Imitation。这组对比支持根据任务与反馈调整模式。</span></p>
+<p><span class="i18n" lang="en"><strong>Mode preferences vary across models.</strong> On WebShop, Qwen selects Imitation most often (53% on average), whereas Llama favors Strategic (45%). Every setting also includes some use of None, where the agent reuses trajectories directly without generating additional guidance.</span><span class="i18n" lang="zh-CN"><strong>不同模型呈现出不同的模式偏好。</strong>在 WebShop 上，Qwen 最常选择 Imitation（平均占比 53%），Llama 则最常选择 Strategic（45%）。各配置中也有部分任务采用 None，直接复用 trajectory，无需额外生成 guidance。</span></p>
+<h3><span class="i18n" lang="en">3. Does retrieving more records always help?</span><span class="i18n" lang="zh-CN">3. 每次检索的记录越多，效果就越好吗？</span></h3>
+<p><span class="i18n" lang="en">The system retrieves two kinds of records: detailed execution histories to help perform a task, and feedback on earlier mode choices to help select a mode. The plots vary how many records are retrieved for each purpose:</span><span class="i18n" lang="zh-CN">系统会检索两类记录：一类提供任务的具体执行过程，另一类提供模式选择后的效果反馈。下图分别考察这两类记录的检索数量：</span></p>
+<ul>
+<li><span class="i18n" lang="en"><strong>B controls how many trajectories are retrieved to help perform the task.</strong> Each trajectory records how a past task was carried out. Once a mode is selected, the system retrieves relevant trajectories to use directly or to generate guidance.</span><span class="i18n" lang="zh-CN"><strong>B 控制执行任务时检索多少条 trajectory。</strong>每条 trajectory 记录过去一次任务的具体执行过程。模式确定后，系统取出相关记录，直接供 agent 参考，或据此生成 guidance。</span></li>
+<li><span class="i18n" lang="en"><strong><math class="memory-math" aria-label="B hat"><mover accent="true"><mi>B</mi><mo>^</mo></mover></math> controls how many feedback records inform mode selection.</strong> Each record describes which mode was used for a similar task and how it performed. The selector uses this feedback to choose how to use memory for the current task.</span><span class="i18n" lang="zh-CN"><strong><math class="memory-math" aria-label="B hat"><mover accent="true"><mi>B</mi><mo>^</mo></mover></math> 控制选择模式时参考多少条历史反馈。</strong>每条反馈记录相似任务采用了哪种模式、效果如何。Selector 据此判断当前任务适合哪种 memory 使用模式。</span></li>
+</ul>
+<figure class="memory-figure"><div class="memory-figure-scroll memory-figure-wide" tabindex="0" role="region" aria-label="Chart / 图表"><a href="figures/memory-retrieval.svg" target="_blank" rel="noopener"><img src="figures/memory-retrieval.svg" loading="lazy" alt="Retrieval sensitivity: B=5 and outcome neighborhood B-hat=10 achieve the highest means among tested values on both ALFWorld and WebShop." data-alt-en="Retrieval sensitivity: B=5 and outcome neighborhood B-hat=10 achieve the highest means among tested values on both ALFWorld and WebShop." data-alt-zh="检索预算敏感性：在测试的取值中，B=5 与 B-hat=10 在 ALFWorld、WebShop 上的均值最高。" width="661" height="307"></a></div><figcaption><span class="i18n" lang="en"><b>Success as retrieval budgets change.</b> Left: trajectory budget B. Right: outcome-log budget <math class="memory-math" aria-label="B hat"><mover accent="true"><mi>B</mi><mo>^</mo></mover></math>. Blue is ALFWorld; green is WebShop. Shading marks defaults, and both y-axes span 40–100%. Means only, using Qwen3-Coder-Next. Source: <a href="2610.27406v1.pdf#page=30">Appendix G</a>.</span><span class="i18n" lang="zh-CN"><b>检索数量变化时，成功率如何变化？</b>左图调整 trajectory 数量 B，右图调整 outcome-log 记录数量 <math class="memory-math" aria-label="B hat"><mover accent="true"><mi>B</mi><mo>^</mo></mover></math>。蓝线为 ALFWorld，绿线为 WebShop；浅色区域标出默认值，纵轴均为 40%–100%。使用 Qwen3-Coder-Next，仅展示均值。数据来自<a href="2610.27406v1.pdf#page=30">附录 G</a>。</span> <a class="memory-figure-open" href="figures/memory-retrieval.svg" target="_blank" rel="noopener"><span class="i18n" lang="en">Open full-size ↗</span><span class="i18n" lang="zh-CN">查看大图 ↗</span></a><span class="memory-chart-hint"><span class="i18n" lang="en">Scroll the chart sideways, or open it full-size.</span><span class="i18n" lang="zh-CN">图表可左右滑动，也可点击查看大图。</span></span></figcaption></figure>
+<p><span class="i18n" lang="en"><strong>Among the tested values, B = 5 and <math class="memory-math" aria-label="B hat"><mover accent="true"><mi>B</mi><mo>^</mo></mover></math> = 10 give the highest mean success on both benchmarks.</strong> For WebShop in the left panel, increasing B from 1 to 5 raises success from 46.0% to 54.0%; increasing it further to 10 lowers success to 48.7%. Retrieving more records does not keep improving performance.</span><span class="i18n" lang="zh-CN"><strong>在所测取值中，B = 5、<math class="memory-math" aria-label="B hat"><mover accent="true"><mi>B</mi><mo>^</mo></mover></math> = 10 在两个 benchmark 上的平均成功率均最高。</strong>以左图的 WebShop 为例，B 从 1 增加到 5 时，成功率从 46.0% 升至 54.0%；继续增加到 10，反而降至 48.7%。增加检索数量并没有持续带来收益。</span></p>
+
+</section>
+<section id="evidence">
+<h2><span class="num">06</span><span class="i18n" lang="en">Should useful abstractions be kept long term?</span><span class="i18n" lang="zh-CN">有用的 abstraction，是否应该长期保留？</span></h2>
+<p><span class="i18n" lang="en">Two auxiliary experiments compare how supplied skill content and selective retention affect task success.</span><span class="i18n" lang="zh-CN">两组辅助实验分别比较 skill 内容与筛选保留策略对任务成功率的影响。</span></p>
+<figure class="memory-figure"><div class="memory-figure-scroll memory-figure-wide" tabindex="0" role="region" aria-label="Chart / 图表"><a href="figures/memory-auxiliary.svg" target="_blank" rel="noopener"><img src="figures/memory-auxiliary.svg" loading="lazy" alt="Auxiliary results: AppWorld success is 23.0%, 40.0%, and 20.0% for no, useful, and toxic skills. On WebShop, filtering skills with GPT-5.5 before storage raises abstraction memory from 38.7% to 46.0%; adding filtered skills as a frozen persistent layer lowers Anti-Persistence from 56.0% to 44.0%." data-alt-en="Auxiliary results: AppWorld success is 23.0%, 40.0%, and 20.0% for no, useful, and toxic skills. On WebShop, filtering skills with GPT-5.5 before storage raises abstraction memory from 38.7% to 46.0%; adding filtered skills as a frozen persistent layer lowers Anti-Persistence from 56.0% to 44.0%." data-alt-zh="辅助结果：AppWorld 的无 skill、有用 skill、错误 skill 成功率为 23.0%、40.0%、20.0%；WebShop 上，用 GPT-5.5 在入库前筛选 skill，使 Abstraction memory 从 38.7% 升至 46.0%；将筛选后的 skill 作为固定持久化层加入 Anti-Persistence，使其从 56.0% 降至 44.0%。" width="681" height="307"></a></div><figcaption><span class="i18n" lang="en"><b>Two separate auxiliary experiments.</b> Left: the same 30 AppWorld tasks with no supplied skills, useful skills, or toxic skills. Right, top: Abstraction memory with and without GPT-5.5 skill filtering before storage. Right, bottom: Anti-Persistence with and without an additional frozen memory layer of filtered skills. Bars show aggregate success rates. Redrawn from <a href="2610.27406v1.pdf#page=29">Figure 11</a>.</span><span class="i18n" lang="zh-CN"><b>两组独立的辅助实验。</b>左：同一组 30 个 AppWorld 任务，分别使用无 skill、有用 skill 与错误 skill。右上：Abstraction memory 是否在入库前用 GPT-5.5 筛选 skill。右下：Anti-Persistence 是否额外加入由筛选后的 skill 构成的固定 memory 层。柱形表示总体成功率。依据<a href="2610.27406v1.pdf#page=29">图 11</a>重绘。</span> <a class="memory-figure-open" href="figures/memory-auxiliary.svg" target="_blank" rel="noopener"><span class="i18n" lang="en">Open full-size ↗</span><span class="i18n" lang="zh-CN">查看大图 ↗</span></a><span class="memory-chart-hint"><span class="i18n" lang="en">Scroll the chart sideways, or open it full-size.</span><span class="i18n" lang="zh-CN">图表可左右滑动，也可点击查看大图。</span></span></figcaption></figure>
+<p><span class="i18n" lang="en"><strong>Guidance can be useful.</strong> On AppWorld, useful skills improve aggregate success from 23.0% to 40.0%, while toxic skills give 20.0%.</span><span class="i18n" lang="zh-CN"><strong>Guidance 本身可以有用。</strong>在 AppWorld 上，有用 skill 将总体成功率从 23.0% 提升至 40.0%，错误 skill 对应 20.0%。</span></p>
+<p><span class="i18n" lang="en"><strong>Filtered skills have different effects in the two memory configurations.</strong> In Abstraction memory, GPT-5.5 screens each newly generated skill to decide whether it should be stored, raising success from 38.7% to 46.0%. In Anti-Persistence, the filtered skills are added as an extra persistent memory layer that remains fixed during evaluation; success falls from 56.0% to 44.0%.</span><span class="i18n" lang="zh-CN"><strong>筛选后的 skill 在两种 memory 配置中带来了不同结果。</strong>在 Abstraction memory 中，每条新生成的 skill 先由 GPT-5.5 筛选，再决定是否存入 memory，成功率从 38.7% 升至 46.0%。在 Anti-Persistence 中，筛选后的 skill 被作为额外的持久化 memory 层加入，并在评测期间保持固定，成功率从 56.0% 降至 44.0%。</span></p>
+<div class="callout"><div class="label"><span class="i18n" lang="en">Takeaway</span><span class="i18n" lang="zh-CN">结论</span></div>
+<p><span class="i18n" lang="en"><strong>Useful guidance can improve task performance, while retaining filtered skills can still reduce it.</strong> These results support Anti-Persistence’s choice to generate guidance as needed and discard it after use.</span><span class="i18n" lang="zh-CN"><strong>有用的 guidance 能提升任务表现，但筛选后长期保留仍可能降低效果。</strong>这些结果支持 Anti-Persistence 按需生成 guidance、用后丢弃的设计。</span></p>
+</div>
+</section>
+<section id="takeaways">
+<h2><span class="num">07</span><span class="i18n" lang="en">Key takeaways</span><span class="i18n" lang="zh-CN">要点总结</span></h2>
+<ul>
+<li><span class="i18n" lang="en"><strong>More memory does not guarantee better performance.</strong> Errors in stored guidance can shape later actions and be distilled again from new execution records, allowing the same mistake to persist across tasks.</span><span class="i18n" lang="zh-CN"><strong>更多 memory 不一定带来更好的表现。</strong>存入 memory 的错误 guidance 可能影响后续执行，并通过新的执行记录再次被归纳出来，让同一错误在任务之间延续。</span></li>
+<li><span class="i18n" lang="en"><strong>Keep execution records and generate guidance for the current task.</strong> Anti-Persistence retains trajectories and outcomes, generates guidance when needed, and discards it after use. This lets later tasks draw on accumulated memory without directly reusing stored guidance.</span><span class="i18n" lang="zh-CN"><strong>保留执行记录，按当前任务生成 guidance。</strong>Anti-Persistence 保留 trajectory 与任务结果，在需要时生成 guidance，用后丢弃。后续任务仍能利用积累的 memory，同时避免直接复用已存储的 guidance。</span></li>
+<li><span class="i18n" lang="en"><strong>Adapt how memory is used.</strong> The selector uses feedback from similar tasks to choose between direct trajectory reuse and different forms of guidance, accounting for the extra LLM calls needed to generate that guidance.</span><span class="i18n" lang="zh-CN"><strong>根据任务选择 memory 的使用方式。</strong>Selector 参考相似任务的历史反馈，在直接复用 trajectory 与生成不同形式的 guidance 之间选择，同时考虑生成 guidance 所需的额外 LLM 调用。</span></li>
+<li><span class="i18n" lang="en"><strong>Higher success with fewer LLM calls.</strong> Anti-Persistence achieves higher success in most evaluated settings while reducing the average number of LLM calls.</span><span class="i18n" lang="zh-CN"><strong>成功率更高，LLM 调用更少。</strong>Anti-Persistence 在多数实验配置中取得更高的成功率，同时降低平均 LLM 调用成本。</span></li>
+</ul>
+</section>
+<section id="cite">
+<h2><span class="num">08</span><span class="i18n" lang="en">Citation</span><span class="i18n" lang="zh-CN">引用</span></h2>
+<div class="copy"><button type="button" id="copyBib"><span class="i18n" lang="en">Copy</span><span class="i18n" lang="zh-CN">复制</span></button>
+<pre><code id="bib">@article{wang2026antipersistence,
+  title   = {More Memory, Worse Agents: Error Reproduction
+             and Anti-Persistence in LLM Agents},
+  author  = {Wang, Ruhan and Panaganti, Kishan and Zhou, Dongruo},
+  journal = {arXiv preprint arXiv:2610.27406},
+  year    = {2026},
+  url     = {https://arxiv.org/abs/2610.27406}
+}</code></pre><span class="copy-status" id="copyStatus" role="status" aria-live="polite"></span></div></section></main>
+<footer><div class="wrap"><span><span class="i18n" lang="en">© 2026 The authors · Indiana University &amp; Tencent HY</span><span class="i18n" lang="zh-CN">© 2026 本文作者 · 印第安纳大学与腾讯混元</span></span><a href="#top"><span class="i18n" lang="en">Back to top ↑</span><span class="i18n" lang="zh-CN">返回顶部 ↑</span></a></div></footer>
+<script>
+  (function () {
+    var root = document.documentElement;
+    var copyButton = document.getElementById('copyBib');
+    var copyStatus = document.getElementById('copyStatus');
+    var copyState = '', copyTimer;
+    var messages = {
+      en: {
+        title: 'More Memory, Worse Agents: Error Reproduction and Anti-Persistence',
+        description: 'Anti-Persistence retains task trajectories and outcomes, generates guidance as needed, and discards it after each task. Explore error reproduction in agent memory, the method, and evaluation results.',
+        navigation: 'Main navigation', theme: 'Toggle color theme',
+        copy: 'Copy', copied: 'Copied', selected: 'Citation selected. Press Ctrl+C or ⌘C to copy.',
+        failed: 'Could not copy automatically. Select the citation and copy it manually.'
+      },
+      zh: {
+        title: 'More Memory, Worse Agents：Error Reproduction 与 Anti-Persistence',
+        description: 'Anti-Persistence 保留任务 trajectory 与结果，按需生成 guidance 并在任务结束后丢弃。本文介绍 agent memory 中的 error reproduction、方法设计与评测结果。',
+        navigation: '主导航', theme: '切换明暗主题',
+        copy: '复制', copied: '已复制', selected: '已选中引用，请按 Ctrl+C 或 ⌘C 复制。',
+        failed: '未能自动复制，请手动选中引用内容后复制。'
+      }
+    };
+
+    function language() { return root.lang === 'zh-CN' ? 'zh' : 'en'; }
+    function renderCopyState() {
+      var labels = messages[language()];
+      copyButton.textContent = copyState === 'copied' ? labels.copied : labels.copy;
+      copyStatus.textContent = copyState ? labels[copyState] : '';
+    }
+
+    function setLanguage(next, remember) {
+      if (next !== 'en' && next !== 'zh') return;
+      root.lang = next === 'zh' ? 'zh-CN' : 'en';
+      var labels = messages[next];
+      document.title = labels.title;
+      document.querySelector('meta[name="description"]').content = labels.description;
+      document.querySelector('meta[property="og:title"]').content = labels.title;
+      document.querySelector('meta[property="og:description"]').content = labels.description;
+      document.getElementById('mainNav').setAttribute('aria-label', labels.navigation);
+      var themeButton = document.getElementById('themeBtn');
+      themeButton.title = labels.theme;
+      themeButton.setAttribute('aria-label', labels.theme);
+      document.querySelectorAll('[data-language]').forEach(function (button) {
+        button.setAttribute('aria-pressed', String(button.dataset.language === next));
+      });
+      document.querySelectorAll('[data-alt-en]').forEach(function (img) {
+        img.alt = img.getAttribute('data-alt-' + next);
+      });
+      renderCopyState();
+      if (remember) {
+        try { localStorage.setItem('research-blog-language', next); } catch (e) {}
+        try {
+          var url = new URL(window.location.href);
+          url.searchParams.set('lang', next);
+          window.history.replaceState(window.history.state, '', url.href);
+        } catch (e) {}
+      }
+    }
+
+    document.querySelectorAll('[data-language]').forEach(function (button) {
+      button.addEventListener('click', function () { setLanguage(button.dataset.language, true); });
+    });
+    setLanguage(language(), false);
+
+    document.getElementById('themeBtn').addEventListener('click', function () {
+      var dark = root.dataset.theme === 'dark' ||
+        (!root.dataset.theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      var next = dark ? 'light' : 'dark';
+      root.dataset.theme = next;
+      try { localStorage.setItem('research-blog-theme', next); } catch (e) {}
+    });
+
+    function reportCopy(state) {
+      clearTimeout(copyTimer);
+      copyState = state;
+      renderCopyState();
+      if (state === 'copied') {
+        copyTimer = setTimeout(function () { copyState = ''; renderCopyState(); }, 1800);
+      }
+    }
+
+    function selectCitation() {
+      try {
+        var range = document.createRange();
+        range.selectNodeContents(document.getElementById('bib'));
+        var selection = window.getSelection();
+        selection.removeAllRanges();
+        selection.addRange(range);
+        reportCopy('selected');
+      } catch (e) { reportCopy('failed'); }
+    }
+
+    copyButton.addEventListener('click', async function () {
+      try {
+        await navigator.clipboard.writeText(document.getElementById('bib').textContent);
+        reportCopy('copied');
+      } catch (e) { selectCitation(); }
+    });
+  })();
+</script>
+</body>
+</html>
